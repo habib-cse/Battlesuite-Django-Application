@@ -58,14 +58,22 @@ def profile_create(request):
 def user_profile(request):
     return render(request, 'accounts/user_profile.html')
     
-def user_login(request):
+def user_login(request): 
+
+    valuenext= request.GET.get('next')
     if request.method =='POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request,username=username, password=password) 
-        if user is not None:
+        if user is not None and valuenext is None:
             login(request, user)
-            return redirect('accounts:user_profile')
+            return redirect('accounts:user_profile') 
+        elif user is not None and valuenext is not None:
+            login(request, user)
+            context= {  
+                'valuenext': valuenext 
+                } 
+            return redirect(valuenext)
         else:
             messages.error(request, 'Username or Password is not correct!') 
     return render(request, 'accounts/user_login.html')
@@ -75,7 +83,7 @@ def user_login(request):
 
     
 
-
+@login_required
 def become_pro(request):
     return render(request, 'accounts/become_pro.html')
 
