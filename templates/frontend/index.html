@@ -1,0 +1,163 @@
+{% extends '../base/base.html' %}
+{% load static %}
+
+{% block title %}
+  Battlesuite
+{% endblock title %}
+  
+{% block content %} 
+<body class="body">
+  <div class="match-background-section">
+    <div class="match-bcknd-cover"></div>
+      {% include 'base/navbar.html' %}
+
+    <div class="match-info-container w-container">
+      <div class="tournament-name-div-block">
+        <h2 class="torunament-name">Top 10 boys tournament </h2>
+      </div>
+      <div class="team-1-info-div-block"><img src="{% static '/project-static/images/Ellipse-78.png' %}" loading="lazy" width="38" alt="" class="team-1-logo">
+        <h5 class="team-1-name">The Samurai crew </h5>
+        <h5 class="team-1-score">4</h5>
+      </div>
+      <div class="team-2-info-div-block"><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="38" alt="" class="team-2-logo">
+        <h5 class="team-2-name">Sniper Wolf Boyz</h5>
+        <h5 class="team-2-score">4</h5>
+      </div>
+      <h3 class="vs">VS</h3>
+      <div class="team-vs-team-div-block">
+        <h4 class="team-vs-team">5 VS 5</h4>
+      </div>
+      <div class="nog-match-div-block">
+        <h4 class="number-of-games-match">12 Games</h4>
+      </div>
+      <div class="not-div-block">
+        <h4 class="number-of-teams">8 Teams</h4>
+      </div>
+      <div class="views-div-block"><img src="{% static '/project-static/images/carbon_view.png' %}" loading="lazy" width="22" alt="" class="view-icon">
+        <h5 class="number-of-views">1.5k</h5>
+      </div>
+      <div class="tournament-descr-div-block">
+        <p class="tournament-description">Hey y&#x27;all check out this awesome tournament that me and some friends have set up. 8 teams of 5 players each, with 12 games (rounds) for each match. rules of this tournament will be snipers only, chevon tower, 2 shots kill. click the notification box for more tournaments like these, share and enjoy this great tournament.</p>
+      </div>
+    </div>
+  </div>
+  <div class="filter-section">
+    <div data-animation="slide" data-hide-arrows="1" data-duration="500" data-infinite="1" class="filter-slider w-slider">
+      <div class="w-slider-mask">
+        <div class="w-slide">
+          <div class="filter-container slide-1 w-container"><a href="#" class="filter-option _1 w-button">subscriptions</a><a href="#" class="filter-option _2 w-button">call of duty-infinite</a><a href="#" class="filter-option _3 w-button">Fortnite</a><a href="#" class="filter-option _4 w-button">Pubg</a><a href="#" class="filter-option _5 w-button">call of duty-bo3</a><a href="#" class="filter-option _6 w-button">NBA 2k20</a><a href="#" class="filter-option _7 w-button">Madden 20</a><a href="#" class="filter-option _8 w-button">FIFA 20</a></div>
+        </div>
+        <div class="w-slide">
+          <div class="filter-container slide-2 w-container"><a href="#" class="filter-option _9 w-button">subscriptions</a><a href="#" class="filter-option _10 w-button">call of duty-infinite</a><a href="#" class="filter-option _11 w-button">Fortnite</a><a href="#" class="filter-option _12 w-button">Pubg</a><a href="#" class="filter-option _13 w-button">call of duty-bo3</a><a href="#" class="filter-option _14 w-button">NBA 2k20</a><a href="#" class="filter-option _15 w-button">Madden 20</a><a href="#" class="filter-option _16 w-button">FIFA 20</a></div>
+        </div>
+        <div class="w-slide">
+          <div class="filter-container slide-3 w-container"><a href="#" class="filter-option _17 w-button">subscriptions</a><a href="#" class="filter-option _18 w-button">call of duty-infinite</a><a href="#" class="filter-option _19 w-button">Fortnite</a><a href="#" class="filter-option _20 w-button">Pubg</a><a href="#" class="filter-option _21 w-button">call of duty-bo3</a><a href="#" class="filter-option _22 w-button">NBA 2k20</a><a href="#" class="filter-option _23 w-button">Madden 20</a><a href="#" class="filter-option _24 w-button">FIFA 20</a></div>
+        </div>
+        <div class="w-slide">
+          <div class="filter-container slide-4 w-container"><a href="#" class="filter-option _25 w-button">subscriptions</a><a href="#" class="filter-option _26 w-button">call of duty-infinite</a><a href="#" class="filter-option _27 w-button">Fortnite</a><a href="#" class="filter-option _28 w-button">Pubg</a><a href="#" class="filter-option _29 w-button">call of duty-bo3</a><a href="#" class="filter-option _30 w-button">NBA 2k20</a><a href="#" class="filter-option _31 w-button">Madden 20</a><a href="#" class="filter-option _32 w-button">FIFA 20</a></div>
+        </div>
+        <div class="w-slide">
+          <div class="filter-container slide-5 w-container"><a href="#" class="filter-option _33 w-button">subscriptions</a><a href="#" class="filter-option _34 w-button">call of duty-infinite</a><a href="#" class="filter-option _35 w-button">Fortnite</a><a href="#" class="filter-option _36 w-button">Pubg</a><a href="#" class="filter-option _37 w-button">call of duty-bo3</a><a href="#" class="filter-option _38 w-button">NBA 2k20</a><a href="#" class="filter-option _39 w-button">Madden 20</a><a href="#" class="filter-option _40 w-button">FIFA 20</a></div>
+        </div>
+      </div>
+      <div class="w-slider-arrow-left"><img src="{% static '/project-static/images/bi_arrow-right-circle-fill.png' %}" loading="lazy" width="21" alt="" class="left-arrow"></div>
+      <div class="w-slider-arrow-right"><img src="{% static '/project-static/images/bi_arrow-right-circle-fill.png' %}" loading="lazy" width="21" alt="" class="right-arrow"></div>
+      <div class="slide-nav w-slider-nav"></div>
+    </div>
+  </div>
+  <div class="matches-clmn-row _1 w-container">
+    <div class="match">
+      <div class="match-background _1"></div>
+      <h5 class="heading">best tournament to be</h5>
+      <div class="div-block-4"></div>
+      <div class="dd"></div>
+      <h6 class="heading-3">4</h6>
+      <h6 class="heading-4">4</h6>
+      <h3 class="heading-2">VS</h3>
+    </div>
+    <div class="match-1">
+      <div class="match-background"></div>
+      <h5 class="heading">best tournament to be</h5>
+      <div class="div-block-4"></div>
+      <div class="dd"></div>
+      <h6 class="heading-3">4</h6>
+      <h6 class="heading-4">4</h6>
+      <h3 class="heading-2">VS</h3>
+    </div>
+    <div class="match-2">
+      <div class="match-background"></div>
+      <h5 class="heading">best tournament to be</h5>
+      <div class="div-block-4"></div>
+      <div class="dd"></div>
+      <h6 class="heading-3">4</h6>
+      <h6 class="heading-4">4</h6>
+      <h3 class="heading-2">VS</h3>
+    </div>
+    <div class="match-3">
+      <div class="match-background"></div>
+      <h5 class="heading">best tournament to be</h5>
+      <div class="div-block-4"></div>
+      <div class="dd"></div>
+      <h6 class="heading-3">4</h6>
+      <h6 class="heading-4">4</h6>
+      <h3 class="heading-2">VS</h3>
+    </div>
+    <div class="match-4">
+      <div class="match-background"></div>
+      <h5 class="heading">best tournament to be</h5>
+      <div class="div-block-4"></div>
+      <div class="dd"></div>
+      <h6 class="heading-3">4</h6>
+      <h6 class="heading-4">4</h6>
+      <h3 class="heading-2">VS</h3>
+    </div>
+  </div>
+  <div class="matches-clmn-row _1 w-container">
+    <div class="match">
+      <div class="match-background _1"></div>
+      <h5 class="heading">best tournament to be</h5>
+      <div class="div-block-4"></div>
+      <div class="dd"></div>
+      <h6 class="heading-3">4</h6>
+      <h6 class="heading-4">4</h6>
+      <h3 class="heading-2">VS</h3>
+    </div>
+    <div class="match-1">
+      <div class="match-background"></div>
+      <h5 class="heading">best tournament to be</h5>
+      <div class="div-block-4"></div>
+      <div class="dd"></div>
+      <h6 class="heading-3">4</h6>
+      <h6 class="heading-4">4</h6>
+      <h3 class="heading-2">VS</h3>
+    </div>
+    <div class="match-2">
+      <div class="match-background"></div>
+      <h5 class="heading">best tournament to be</h5>
+      <div class="div-block-4"></div>
+      <div class="dd"></div>
+      <h6 class="heading-3">4</h6>
+      <h6 class="heading-4">4</h6>
+      <h3 class="heading-2">VS</h3>
+    </div>
+    <div class="match-3">
+      <div class="match-background"></div>
+      <h5 class="heading">best tournament to be</h5>
+      <div class="div-block-4"></div>
+      <div class="dd"></div>
+      <h6 class="heading-3">4</h6>
+      <h6 class="heading-4">4</h6>
+      <h3 class="heading-2">VS</h3>
+    </div>
+    <div class="match-4">
+      <div class="match-background"></div>
+      <h5 class="heading">best tournament to be</h5>
+      <div class="div-block-4"></div>
+      <div class="dd"></div>
+      <h6 class="heading-3">4</h6>
+      <h6 class="heading-4">4</h6>
+      <h3 class="heading-2">VS</h3>
+    </div>
+  </div>
+
+  {% endblock content %}

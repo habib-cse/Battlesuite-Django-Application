@@ -1,0 +1,19 @@
+{% load static %}
+<div class="players-nav-bar w-container">
+    <a href="#" class="logos w-inline-block"><img src="{% static '/project-static/images/Group-91.png' %}" loading="lazy" width="64" alt=""></a>
+    <a href="#" class="search-menu w-inline-block"><img src="{% static '/project-static/images/carbon_search.png' %}" loading="lazy" width="22" alt=""></a>
+    <a href="#" class="live-streams-menu w-inline-block"><img src="{% static '/project-static/images/Vector.png' %}" loading="lazy" width="18" alt=""></a>
+    <a href="{% url 'accounts:user_register' %}" class="profile-menu w-inline-block">
+      
+      {% if request.user.is_authenticated %} 
+        {% if request.user.mainuser.profile_pic %}
+        <img src="{{request.user.mainuser.profile_pic.url}}" loading="lazy" width="34" alt="" class="image-12">
+        {% else %}
+        <img src="{% static '/project-static/images/Ellipse-77.png' %}" loading="lazy" width="34" alt="" class="image-12">
+        {% endif %} 
+      {% else %}
+        <img src="{% static '/project-static/images/Ellipse-77.png' %}" loading="lazy" width="34" alt="" class="image-12">
+      {% endif %}
+        
+    </a>
+  </div>

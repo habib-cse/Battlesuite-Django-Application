@@ -1,0 +1,113 @@
+{% extends '../base/base.html' %}
+{% load static %}
+
+{% block title %}
+  User Login
+{% endblock title %}
+  
+{% block content %} 
+<body>
+  <div class="menu-section">
+    <div class="players-nav-bar w-container">
+        {% include 'base/navbar.html' %} 
+    </div>
+  </div>
+  <div class="section-10">
+    <div class="w-container">
+      <div class="div-block-34">
+        <div id="w-node-17885fbe9fbd-da7ad038" class="div-block-35 circle-image">
+            
+            {% if request.user.mainuser.profile_pic %}
+                <img src="{{request.user.mainuser.profile_pic.url}}" alt="">
+            {% endif %} 
+          <h2 class="profile-name">{{request.user.username}}</h2>
+          
+          {% if request.user.mainuser.pro_status %}
+            <a href="{% url 'core:follow_community' %}" class="bap-button w-button">Access Pro</a>
+          {% else %}
+            <a href="{% url 'accounts:become_pro' %}" class="bap-button w-button">Become a pro</a>
+          {% endif %}
+              
+          
+        </div>
+        <div id="w-node-fdac5a680b22-da7ad038"><a href="viewers-profile-setting-page.html" class="w-inline-block"><img src="images/ant-design_setting-outlined.png" loading="lazy" width="44" alt="" class="setting-icon"></a></div>
+      </div>
+      <div>
+        <h4 class="heading-18">Subscriptions</h4>
+      </div>
+    </div>
+    <div data-animation="slide" data-hide-arrows="1" data-duration="500" data-infinite="1" class="slider-2 w-slider">
+      <div class="w-slider-mask">
+        <div class="w-slide">
+          <div class="w-container">
+            <div class="div-block-36">
+              <div class="block1"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+              <div class="block2"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+              <div class="block3"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+              <div class="block4"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+              <div class="block5"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+              <div class="block6"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+              <div class="block7"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="w-container">
+            <div class="div-block-36">
+                <div class="block1"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block2"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block3"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block4"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block5"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block6"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block7"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+              </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="w-container">
+            <div class="div-block-36">
+                <div class="block1"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block2"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block3"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block4"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block5"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block6"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block7"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+              </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="w-container">
+            <div class="div-block-36">
+                <div class="block1"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block2"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block3"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block4"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block5"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block6"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block7"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+              </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="w-container">
+            <div class="div-block-36">
+                <div class="block1"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block2"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block3"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block4"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block5"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block6"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+                <div class="block7"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="100" class="teamsbscrb-logo"><a href="#" class="teamname">My raiders90</a></div>
+              </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="left-arrow-4 w-slider-arrow-left"><img src="{% static '/project-static/images/bi_arrow-right-circle-fill.png' %}" loading="lazy" width="35" alt="" class="image-20"></div>
+      <div class="right-arrow-4 w-slider-arrow-right"><img src="{% static '/project-static/images/bi_arrow-right-circle-fill.png' %}" loading="lazy" width="35" alt=""></div>
+      <div class="slide-nav-5 w-slider-nav w-round"></div>
+    </div>
+  </div>
+  {% endblock content %}

@@ -1,0 +1,117 @@
+{% extends '../base/base.html' %}
+{% load static %} 
+{% load extra_tags %}
+{% block title %}Follow Community {% endblock title %} 
+{% block content %} 
+<body>
+  <div class="player-menu">
+    <div class="container-20 w-container">
+      <div id="w-node-f2f7c5661d82-57899293" class="lgo-div-block"><img src="{% static '/project-static/images/Battlesuite.png' %}" loading="lazy" width="145" alt="" class="lgo"></div>
+      <div class="icon-menu-block">
+        {% include 'base/navbar.html' %} 
+      </div>
+    </div>
+  </div>
+
+  <div class="search-section">
+    <div class="container-21 w-container">
+      <div class="custom_form">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="ui-widget"> 
+            <input id="search" type="text" name="search" value="{{search}}"> 
+          </div> 
+          <input type="submit" value="Search">
+        </form>
+
+      </div><a href="{% url 'core:follow_community' %}" class="link-block-2 w-inline-block"><img src="{% static '/project-static/images/bytesize_close.png' %}" loading="lazy" width="27" alt="" class="x-out"></a></div>
+  </div>
+  <div class="section-12">
+    <div class="w-container community_area infinite-container"> 
+      {% if community_list %} 
+        {% for community in community_list %}
+          <div class="single_community infinite-item">
+            <a href="{% url 'core:community_details' community.id %}"><img src="{{community.image.url}}">
+              <h4 class="heading-28">{{community.name}}</h4>
+            </a> 
+            
+            {% if request.user.id|following_check:community.id %}
+              <p id="following">Following</p>
+
+            {% else %}
+              <p id="follow-{{community.id}}" onclick="following({{community.id}})">Follow</p>
+            {% endif %}
+               
+          </div>
+        {% endfor %}
+      {% else %}
+        <h3>No Community with your search</h3>    
+      {% endif %}
+    </div>
+    
+    {% if community_list.has_next %}
+      <a class="infinite-more-link" href="?page={{ community_list.next_page_number }}">More</a>
+    {% endif %} 
+
+  </div>
+  {% endblock content %}
+
+  
+  {% block script %} 
+    <script> 
+        // Auto Complete Search 
+        $(function() {
+         $("#search").autocomplete({
+           source: "{% url 'core:get_places' %}",
+           select: function (event, ui) { 
+             AutoCompleteSelectHandler(event, ui)
+           },
+           minLength: 1,
+         });
+       });
+     
+       function AutoCompleteSelectHandler(event, ui)
+       {
+         var selectedObj = ui.item;
+       } 
+
+  
+      //infinite Scroll Javascript 
+      var infinite = new Waypoint.Infinite({
+        element: $('.infinite-container')[0],
+        offset: 'bottom-in-view',
+  
+        onBeforePageLoad: function () {
+          
+        },
+        onAfterPageLoad: function ($items) {
+           
+        }
+      }); 
+
+
+
+      function following(id){
+        $.ajax({
+          url:"{% url 'core:community_following' %}",
+          type: 'get',
+          data:{
+            community_id: id
+          },
+          success:function(response){ 
+            var following_id = "follow-" + id.toString();
+            document.getElementById(following_id).innerHTML = "Following";
+            tag = document.getElementById(following_id).style.color = 'burlywood';
+            tag = document.getElementById(following_id).style.cursor = 'not-allowed' ;
+
+          },
+          error:function(response){
+            alert("Somthing is missing")
+          }
+        });
+      }
+    </script>  
+
+
+  {% endblock script %}
+    

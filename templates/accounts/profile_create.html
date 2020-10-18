@@ -1,0 +1,74 @@
+{% extends '../base/base.html' %}
+{% load static %}
+
+{% block title %}
+  User Signup
+{% endblock title %}
+  
+{% block content %} 
+<body class="body-2">
+  <div class="menu-section">
+    {% include 'base/navbar.html' %}
+  </div>
+  <div>
+   
+    <div class="container-11 w-container">
+      <h2 class="heading-16">Create account</h2>
+      <div class="custom_usercreate_form">
+        <form action="" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="single_form">
+            <div class="preview_image"> 
+              
+              {% if request.user.muser.profile_pic %}
+                <img id="input" src="{{request.user.muser.profile_pic.url}}" alt=""> 
+              {% else %}
+              <img id="output"> 
+              {% endif %} 
+              <p>please upload a gaming profile photo</p>
+            </div>
+            <p>Add profile photo</p>
+          <input type="file" name="profile_image" id="file" onchange="loadFile(event)" required> 
+          </div>
+
+          <div class="single_form">
+            <p>Create username</p>
+            <input type="text" name="username" value="{{request.user.username}}" required>
+          </div> 
+          <div class="single_form">
+            <p>Create password</p>
+            <input type="password" name="password" required>
+          </div> 
+          <div class="single_form">
+            <p>Re-enter password</p>
+            <input type="password" name="password1" required>
+          </div> 
+          <div class="single_form">
+            <input type="submit" value="Create account">
+          </div>   
+        </form>
+        <div class="error_msg"> 
+          {% for message in messages %}
+            <p>{{message}}</p>
+          {% endfor %} 
+        </div>
+   
+      </div>
+    </div>
+  </div>
+
+  {% endblock content %}
+
+  
+  {% block script %}
+  <script>
+    var loadFile = function(event) {
+        let image = document.getElementById('output'); 
+        image.src = URL.createObjectURL(event.target.files[0]); 
+        let image_old = document.getElementById('input'); 
+        image_old.src = ""; 
+        
+    };
+    </script>
+  {% endblock script %}
+    

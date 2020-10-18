@@ -1,0 +1,176 @@
+{% extends '../base/base.html' %}
+{% load static %} 
+{% load humanize %}
+{% load extra_tags %}
+{% block title %} Follow Community {% endblock title %} 
+{% block content %} 
+<body>
+  <div class="player-menu">
+    <div class="container-20 w-container">
+      <div id="w-node-f878ccf7b087-6fb1190e" class="lgo-div-block"><img src="" loading="lazy" width="145" alt="" class="lgo"></div>
+      <div class="icon-menu-block">
+        {% include 'base/navbar.html' %}  
+      </div>
+    </div>
+  </div>
+  <div class="following_community_area"> 
+    <div class="w-container community_area owl-carousel">
+     
+      {% for community in community_list %}
+        <div class="single_community item" style="width: 100%;padding:0; margin-bottom:0">
+          <a href="{% url 'core:community_details' community.community.id %}"><img src="{{community.community.image.url}}">
+            <h4 class="heading-28">{{community.community.name}}</h4>
+          </a>  
+        </div>
+      {% endfor %} 
+     
+    </div>
+  </div>
+  <div class="section-13">
+    <div class="left-block"></div>
+    <div class="">
+      <div class="div-block-71">
+        <div>
+          <h4 class="community-name">{{community.name}} <a style="font-weight:600;color:#9b91e6" href="{% url 'core:follow_community' %}">Community</a></h4>
+          <h6 class="community-followers">{{follower}} Followers</h6>
+        </div>
+        <div class="div-block-72">
+          <a href="{% url 'core:add_communitycontent' community.id %}" class="link-block-3 w-inline-block"><img src="{% static '/project-static/images/clarity_add-line.png' %}" loading="lazy" width="30" alt="" class="add-content"></a>
+          <a href="" class="w-inline-block"><img src="{% static '/project-static/images/carbon_search-1.png' %}" loading="lazy" width="27" alt="" class="search-for-teams-players"></a>
+        </div>
+      </div> 
+      
+      {% if comment_list %}
+        
+        {% for comment in comment_list %}
+          <div class="forum-content">
+            <div class="headpost">
+              <div id="w-node-9fa1862b6b81-6fb1190e" class="profile-photo-block"> 
+                  {% if comment.user.mainuser.profile_pic %}
+                    <img src="{{comment.user.mainuser.profile_pic.url}}" loading="lazy" width="41" sizes="41px"alt="" class="profile">
+                  {% else %}
+                    <img src="{% static '/static/project-static/images/user.png' %}" loading="lazy" width="41" sizes="41px"alt="" class="profile">
+                  {% endif %}
+                </div>
+              <div class="username-block">
+                <h4 class="prfl-name">{{comment.user.username}}</h4>
+                <h6 class="time">{{comment.datetime|naturaltime}}</h6>
+              </div>
+              <div class="div-block-80"><img src="{% static '/project-static/images/eva_more-vertical-fill.png' %}" loading="lazy" width="20" alt="" class="lear-more-icon"></div>
+            </div>
+            <div class="post-section"><img src="{{comment.image.url}}" loading="lazy" width="311" height="330" alt="" class="image-content"></div>
+            <div class="description-box">
+              <div class="desc">
+                <p class="text">{{comment.content}}</p>
+              </div>
+            </div>
+            <div class="recommendation-block">
+              <div class="recommendation-box comment_boxs">
+                <a href="{% url 'core:add_usercomment' comment.id %}"><i class="fas fa-comment"></i> <span>{{comment.id|comment_count|intword}}</span></a> 
+                
+                {% if request.user.id|liked:comment.id %}
+                  <span class="like_icon"><i style="color: green;cursor:not-allowed;" class="fas fa-thumbs-up"></i></span>
+                {% else %}
+                  <span class="like_icon"><i id="like-{{comment.id}}" onclick="addLike({{comment.id}})" class="fas fa-thumbs-up"></i></span>
+                {% endif %}
+                  
+                
+                <h6 id="likes-{{comment.id}}" class="ofinteraction" data-value="{{ comment.id|total_number_of_like }}">{{ comment.id|total_number_of_like }}</h6>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+      <h3 id="w-node-42f21814854a-6fb1190e" class="heading-38" style="margin-bottom: 50px; margin-top:20px">No Comments for this Community</h3>
+      <hr>
+      {% endif %}      
+
+
+      <h3 id="w-node-42f21814854a-6fb1190e" class="heading-38" style="margin-bottom: 50px; margin-top:20px">Add new friend</h3>
+      <div class="div-block-86">
+        <div id="w-node-22e8ab512170-6fb1190e" class="div-block-85"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="63" alt="" class="image-45">
+          <h6 class="heading-36">Therealthanag</h6>
+          <a href="#" class="link-block-5 w-inline-block">
+            <h6 class="heading-37">Add friend</h6>
+          </a>
+        </div>
+        <div id="w-node-c6476a7fbd1d-6fb1190e" class="div-block-85"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="63" alt="" class="image-45">
+          <h6 class="heading-36">Therealthanag</h6>
+          <a href="#" class="link-block-5 w-inline-block">
+            <h6 class="heading-37">Add friend</h6>
+          </a>
+        </div>
+        <div id="w-node-2e860168417d-6fb1190e" class="div-block-85"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="63" alt="" class="image-45">
+          <h6 class="heading-36">Therealthanag</h6>
+          <a href="#" class="link-block-5 w-inline-block">
+            <h6 class="heading-37">Add friend</h6>
+          </a>
+        </div>
+        <div id="w-node-3c12feafbfb9-6fb1190e" class="div-block-85"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="63" sizes="63px" alt="" class="image-45">
+          <h6 class="heading-36">Therealthanag</h6>
+          <a href="#" class="link-block-5 w-inline-block">
+            <h6 class="heading-37">Add friend</h6>
+          </a>
+        </div>
+        <div id="w-node-496dd5ac084d-6fb1190e" class="div-block-85"><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="63"  sizes="63px" alt="" class="image-45">
+          <h6 class="heading-36">Therealthanag</h6>
+          <a href="#" class="link-block-5 w-inline-block">
+            <h6 class="heading-37">Add friend</h6>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="right-block"></div>
+  </div>
+  {% endblock content %}
+
+{% block script %}
+  <script>
+
+    $(document).ready(function(){
+      
+      $('.owl-carousel').owlCarousel({
+        loop:true,
+        margin:10,
+        nav:true,
+        autoplay:true,
+        responsive:{
+            0:{
+                items:1
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:6
+            }
+        }
+    })
+
+    });
+
+    function addLike(cid){ 
+      $.ajax({
+        url:"{% url 'core:add_like' %}",
+        type: 'get',
+        data:{
+          content_id: cid
+        },
+        success: function(response){
+          var like_id = "like-" + cid.toString(); 
+          var like_number = "likes-" + cid.toString(); 
+
+          document.getElementById(like_id).style.color = 'green';
+          document.getElementById(like_id).style.cursor = 'not-allowed' ;
+          var number_of_comment = document.getElementById(like_number).getAttribute('data-value');
+          number_of_comment = parseInt(number_of_comment) + 1
+          document.getElementById(like_number).innerHTML = number_of_comment
+        },
+        error: function(response){
+          alert("Somthing is missing")
+        }
+      });
+    }
+  </script>
+{% endblock script %}
+  

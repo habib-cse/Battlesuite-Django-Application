@@ -1,0 +1,130 @@
+
+{% extends '../base/base.html' %}
+{% load static %} 
+{% load humanize %}
+{% load extra_tags %}
+{% block title %} Follow Community {% endblock title %} 
+{% block content %} 
+<body>
+  <div class="player-menu">
+    <div class="container-20 w-container">
+      <div id="w-node-20877d5a09ef-841d5252" class="lgo-div-block"><img src="images/Battlesuite.png" loading="lazy" width="145" alt="" class="lgo"></div>
+      <div class="icon-menu-block">
+        {% include 'base/navbar.html' %}  
+      </div>
+    </div>
+  </div>
+  <div class="container-39 w-container comment_page_area" style="padding-bottom: 30px;">
+    <h5 class="go_back"><a href="{% url 'core:community_details' community_forum.community.id %}">Go back</a></h5>
+    <h3 style="font-weight: 400;" class="heading-58">Forum of <strong>{{community_forum.community}}</strong> Community</h3> 
+    <div class="forum_info">
+      <p>Posted:  <span>{{community_forum.datetime|date:'M d, Y'}}</span></p>
+      <p><i class="fas fa-comment"></i> <span>{{community_forum.id|comment_count|intword}}</span></p>
+      <p><i class="fas fa-thumbs-up"></i> <span>{{ community_forum.id|total_number_of_like }}</span></p>
+    </div>
+    <div class="single_comment_area"> 
+      <div class="comment_image"> 
+        <img src="{{community_forum.image.url}}" alt=""> 
+        <p>{{community_forum.content}}</p>
+      </div>  
+      <div class="new_comment" style="margin-bottom: 5px;">
+        <h3 style="color: #8782eb;">Comments</h3>
+        <form action="" method="POST">
+          {% csrf_token %}
+          <input type="text" name="comment" placeholder="Write a comment...">
+          <input style="display: none;" type="submit" value="">
+        </form>
+      </div>
+      <div class="single_comment_areas infinite-container">
+      {% if comments_list %} 
+        {% for comment in comments_list %} 
+         {% if request.user.id == comment.commented_user.id %} 
+            <div class="single_comment infinite-item"> 
+              <div class="comment_user">
+                <img src="{{comment.commented_user.mainuser.profile_pic.url}}" alt="">
+              </div>
+              <div class="user_comment_text">
+                <h2>{{comment.commented_user.username}} <span>{{comment.datetime|naturaltime}}</span></h2>
+                <p>{{comment.comment_text}} <button class="edit_button" id="myBtn-{{comment.id}}" onclick="modalshow({{comment.id}})" ><i class="fas fa-edit"></i></button></p>
+                
+                <div id="myModal-{{comment.id}}" class="modal"> 
+                  <div class="modal-content">
+                    <form action="{% url 'core:comment_edit' comment.id %}" method="POST">{% csrf_token %}
+                      <div class="modal-header">
+                        <span class="close close-{{comment.id}}">&times;</span><h2>Edit Comment</h2>
+                      </div>
+                      <div class="modal-body">  
+                          <textarea name="new_comment" id="" cols="30" rows="6">{{comment.comment_text}}</textarea>
+                      </div> 
+                      <div class="modal-footer">
+                        <input type="submit" value="Update">
+                        <a href="{% url 'core:comment_delete' comment.id %}">Delete</a>
+                      </div>
+                    </form>
+                  </div> 
+                </div>
+              </div> 
+            </div>  
+          {% else %} 
+            <div class="single_comment infinite-item">
+              <div class="comment_user">
+                <img src="{{comment.commented_user.mainuser.profile_pic.url}}" alt="">
+              </div>
+              <div class="user_comment_text">
+                <h2>{{comment.commented_user.username}} <span>{{comment.datetime|naturaltime}}</span></h2>
+                <p>{{comment.comment_text}}</p>
+                
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}  
+
+        {% if comments_list.has_next %}
+          <a class="infinite-more-link" href="?page={{ comments_list.next_page_number }}">More</a>
+        {% endif %} 
+
+        {% endif %}  
+      </div>
+    </div>
+  </div>  
+  {% endblock content %} 
+  {% block script %} 
+  <script>
+    //Javascript for Infainite Scroll for Comments
+    var infinite = new Waypoint.Infinite({
+      element: $('.infinite-container')[0],
+      offset: 'bottom-in-view',
+
+      onBeforePageLoad: function () {
+        
+      },
+      onAfterPageLoad: function ($items) {
+         
+      }
+    }); 
+    
+    // Modal Javascrpt
+    function modalshow(id){
+    // Get the modal
+    var modal_id = "myModal-" + id.toString()
+    var btn_id = "myBtn-" + id.toString()
+    var close_class = "close-" + id.toString()
+
+    var modal = document.getElementById(modal_id); 
+    var btn = document.getElementById(btn_id); 
+    var span = document.getElementsByClassName(close_class)[0];
+    btn.onclick = function() {
+      modal.style.display = "block";
+    } 
+    span.onclick = function() {
+      modal.style.display = "none";
+    } 
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  }
+    </script>
+  {% endblock script %}
+    
