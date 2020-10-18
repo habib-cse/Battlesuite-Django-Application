@@ -30,7 +30,8 @@ def follow_community(request):
         'search':search,
     }
     return render(request, 'frontend/follow_community.html',context)
-
+    
+@login_required
 def community_following(request):
     if request.is_ajax():
         community_id = int(request.GET.get('community_id'))
@@ -80,6 +81,7 @@ def publish_communitycontent(request, cid,image, content):
     }
     return render(request, 'frontend/publish_communitycontent.html', context)
 
+@login_required
 def add_like(request):
     if request.is_ajax():
         content_id = int(request.GET.get('content_id'))
@@ -87,7 +89,7 @@ def add_like(request):
         Like.objects.create(user_id = user_id, communityforum_id = content_id)
         return JsonResponse({"message":"Liked"})
 
-
+@login_required
 def add_usercomment(request,forum_id):
     user_id = request.user.id
     community_forum = Communityforum.objects.get(id=forum_id)
@@ -112,7 +114,7 @@ def add_usercomment(request,forum_id):
         'community_forum':community_forum,
     }
     return render(request, 'frontend/add_usercomment.html',context)
- 
+@login_required
 def comment_edit(request, id):
     if request.method == 'POST': 
         new_comment = request.POST.get('new_comment')
@@ -121,12 +123,28 @@ def comment_edit(request, id):
         user_comment.save()
         return redirect('core:add_usercomment',user_comment.commented_forum.id )
 
+@login_required
 def comment_delete(request, id): 
     user_comment = Usercomment.objects.get(id=id)
     user_comment.delete() 
     return redirect('core:add_usercomment',user_comment.commented_forum.id )
 
 
+import json
+def get_places(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '')
+        places = Community.objects.filter(name__icontains=q)
+        results = []
+        for pl in places:
+            place_json = {}
+            place_json = pl.name
+            results.append(place_json)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
 
 
 
@@ -161,19 +179,3 @@ def property(request, name):
 
 
 
-
-import json
-def get_places(request):
-    if request.is_ajax():
-        q = request.GET.get('term', '')
-        places = Community.objects.filter(name__icontains=q)
-        results = []
-        for pl in places:
-            place_json = {}
-            place_json = pl.name
-            results.append(place_json)
-        data = json.dumps(results)
-    else:
-        data = 'fail'
-    mimetype = 'application/json'
-    return HttpResponse(data, mimetype)
