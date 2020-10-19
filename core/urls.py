@@ -13,11 +13,9 @@ urlpatterns = [
     path('edit-usercomment/<int:id>', views.comment_edit, name='comment_edit'),
     path('delete-comment/<int:id>', views.comment_delete, name='comment_delete'),
     path('api/get_places/', views.get_places, name='get_places'),
-
-
-
-
-
+    path("tournament/mytournament/", views.tournament_mytournament, name="mytournament"),
+    path("tournament/challenges/", views.tournament_challenges, name="challenges"),
+    path("tournament/invites/", views.tournament_invites, name="invites"),
     path('<str:name>/', views.property, name='property'),
 
 ]

@@ -1,0 +1,27 @@
+{% extends "base/tournament_base.html" %}
+{% load static %}
+
+{% block body %} 
+ {% for username, image in players %}
+  <div class="container-51 w-container"><img src="{% static '/project-static/images/mwJsSm7i_400x400.jpg' %}" loading="lazy" width="61" alt="" class="teamlgo">
+    <h3 class="team-nme">{{ username }}</h3>
+    <h5 class="detail">Has challenged to one of his tournament</h5>
+    <h5 class="league-nme">FORTNITE LEAGUE</h5>
+    <div class="tournament-info-box">
+      <div class="tournamentname-schedule">
+        <h4 class="tournamentname">Great charity tournament event</h4>
+        <h6 class="schedule-info">Scheduled 4 hours from now</h6>
+      </div>
+      <div class="tournament-mode-info">
+        <h1 class="td-mode">5 V 5</h1>
+        <h1 class="td-mode">8 teams</h1>
+        <h1 class="td-mode">60min</h1>
+      </div>
+      <div class="div-block-127">
+        <p class="tournamentdescription">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
+      </div>
+      <div class="action-button"><a href="#" class="actionbutton _3 w-button">DECLINE CHALLENGE</a><a href="#" class="actionbutton et _2 w-button">ACCEPT CHALLENGE</a></div>
+    </div>
+  </div>
+  {% endfor %}
+{% endblock %}

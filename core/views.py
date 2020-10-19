@@ -8,6 +8,51 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def home(request):
     return render(request,'frontend/index.html'
     )
+
+def tournament_mytournament(request):
+    tournaments = [
+        "Great charity tournament event",
+        "GTA 5 Tournament",
+        "Rocket League Tournament",
+        "Gungeon Tournament",
+        "Among Us Tournament",
+    ]
+    context = {
+        "path": "mytournament",
+        "tournaments": tournaments,
+    }
+    return render(request, "frontend/tournament-page-mytournament.html", context)
+
+def tournament_challenges(request):
+    players = [
+        ("The realnivo", "images/mwJsSm7i_400x400.jpg"),
+        ("warrier83", "images/machine-warrior-e-sports-logo-design-machine-warrior-gaming-mascot-twitch-profile_74154-43-p-500.jpeg"),
+        ("Google", "images/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"),
+    ]
+    context = {
+        "path": "challenges",
+        "players": players,
+    }
+    return render(request, "frontend/tournament-page-challenges.html", context)
+
+
+def tournament_invites(request):
+
+    players = [
+        ("The realnivo", "images/mwJsSm7i_400x400.jpg"),
+        ("warrier83", "images/machine-warrior-e-sports-logo-design-machine-warrior-gaming-mascot-twitch-profile_74154-43-p-500.jpeg"),
+        ("Google", "images/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"),
+    ]
+
+    context = {
+        "path": "invites",
+        "players": players,
+    }
+
+    return render(request, "frontend/tournament-page-invites.html", context)
+
+
+
 @login_required()
 def follow_community(request):
     community_list = Community.objects.filter(status=True).order_by('name')
