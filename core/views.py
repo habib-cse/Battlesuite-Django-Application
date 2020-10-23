@@ -1,22 +1,74 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.http import JsonResponse
-from .models import Community, Follow, Communityforum, Like, Usercomment
+from .models import Community, Follow, Communityforum, Like, Usercomment, Team, TeamUser, Tournament, Challenge
+from .forms import TournamentForm
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import  FileSystemStorage
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 # Create your views here.
 def home(request):
     return render(request,'frontend/index.html'
     )
 
+@login_required()
+def create_tournament(request):
+    if request.method=="GET":
+        team_size_choices = ["1 VS 1","2 VS 2","3 VS 3","4 VS 4","5 VS 5"]
+        team_number_choices = ["2 Teams", "4 Teams", "8 Teams"]
+        game_length_choices = ["40 Minutes","60 Minutes","80 Minutes"]
+        context = {
+            "team_size_choices" : team_size_choices,
+            "team_number_choices" : team_number_choices,
+            "game_length_choices" : game_length_choices
+        }
+        return render(request, "frontend/create-my-tournament.html", context=context)
+    elif request.method=="POST":
+        form = TournamentForm(request.POST)
+        tournament = Tournament(name=form.data["name"], 
+                                creator=request.user, 
+                                game_name=form.data["game_name"], 
+                                date=form.data["date"], 
+                                game_length=form.data["game_length"], 
+                                description=form.data["description"], 
+                                platform=form.data["platform"], 
+                                player_amount=form.data["player_amount"], 
+                                number_of_teams=form.data["number_of_teams"])
+        tournament.save()
+        return render(request, "frontend/create-my-tournament-teams.html")
+
+def edit_tournament(request):
+    try:
+        user_team = Team.objects.get(admin=request.user)
+    except:
+        user_team = TeamUser.objects.get(user=request.user).team
+
+    tournament = Tournament.objects.filter(creator=request.user)[0]
+    
+
+    challenged_teams = Challenge.objects.filter(host_team=user_team, tournament=tournament)
+    challenged_teams = [relation.challenged_team for relation in challenged_teams]
+    
+    all_teams = [team for team in Team.objects.all() if team not in challenged_teams]
+    all_teams.remove(user_team)
+
+    teammembers = TeamUser.objects.filter(team=user_team)
+    teammembers = [relation.user for relation in teammembers]
+
+    context = {
+        "all_teams": all_teams,
+        "challenged_teams": challenged_teams,
+        "teammembers": teammembers
+    }
+
+    return render(request, "frontend/create-my-tournament-teams.html", context)
+
 def tournament_mytournament(request):
-    tournaments = [
-        "Great charity tournament event",
-        "GTA 5 Tournament",
-        "Rocket League Tournament",
-        "Gungeon Tournament",
-        "Among Us Tournament",
-    ]
+    # if request.user:
+    #     user_team = Team.objects.get(admin=request.user)
+    #     all_users = TeamUser.objects.filter(team=user_team)
+    #     print(all_users[0].id)
+    tournaments = Tournament.objects.filter(creator=request.user)
     context = {
         "path": "mytournament",
         "tournaments": tournaments,
@@ -24,14 +76,16 @@ def tournament_mytournament(request):
     return render(request, "frontend/tournament-page-mytournament.html", context)
 
 def tournament_challenges(request):
-    players = [
-        ("The realnivo", "images/mwJsSm7i_400x400.jpg"),
-        ("warrier83", "images/machine-warrior-e-sports-logo-design-machine-warrior-gaming-mascot-twitch-profile_74154-43-p-500.jpeg"),
-        ("Google", "images/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"),
-    ]
+    try:
+        user_team = Team.objects.get(admin=request.user)
+    except:
+        user_team = TeamUser.objects.get(user=request.user).team
+    challenges = Challenge.objects.filter(challenged_team=user_team)
+    tournaments = [Challenge.tournament for Challenge in challenges]
+
     context = {
         "path": "challenges",
-        "players": players,
+        "tournaments": tournaments,
     }
     return render(request, "frontend/tournament-page-challenges.html", context)
 

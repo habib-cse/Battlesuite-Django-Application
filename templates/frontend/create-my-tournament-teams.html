@@ -1,0 +1,41 @@
+{% extends '../base/base.html' %}
+  {% load static %}
+
+  {% block content %}
+  <div class="player-menu">
+      <div class="container-20 w-container">
+        <div id="w-node-06a925cb8f7c-1f01bbf0" class="lgo-div-block"><img src="images/Battlesuite.png" loading="lazy" width="145" alt="" class="lgo"></div>
+        <div class="icon-menu-block"><a href="#" class="forum-icon w-inline-block"><img src="images/whh_community.png" loading="lazy" width="24" alt="" class="form-icon"></a><a href="#" class="w-inline-block"><img src="images/Vector-2.png" loading="lazy" width="21" alt="" class="team-page-icon"></a><a href="#" class="w-inline-block"><img src="images/mdi_tournament.png" loading="lazy" width="25" alt="" class="tournament-icon"></a><a href="#" class="w-inline-block"><img src="images/ant-design_setting-filled.png" loading="lazy" width="25" alt="" class="settingicon"></a><a href="#" class="w-inline-block"><img src="images/make-you-a-professional-gaming-banner-and-profile-picture.jpg" loading="lazy" width="36" sizes="(max-width: 479px) 13vw, (max-width: 767px) 6vw, 36px" srcset="images/make-you-a-professional-gaming-banner-and-profile-picture-p-500.jpeg 500w, images/make-you-a-professional-gaming-banner-and-profile-picture.jpg 550w" alt="" class="tprofileicon"></a></div>
+      </div>
+    </div>
+    <div class="section-20">
+      <div class="w-container">
+        <h4 class="go-back-button">Go back</h4>
+        <h2 class="heeader">Organize Your Tournament</h2><img src="images/download.jpg" loading="lazy" width="106" alt="" class="leaguecover">
+        <div class="form-block w-form">
+          <form id="email-form" name="email-form" data-name="Email Form" class="form-6">
+            <h1 class="invite-members">Invite Team Members</h1><label for="name" class="field-label-9">Invite team members that you would like to attend this tournament with </label>
+            <div class="div-block-131">
+              {% for teammember in teammembers %}
+              <div class="div-block-130"><img src="images/mwJsSm7i_400x400.jpg" loading="lazy" width="71" alt="" class="team-photo">
+                <h4 class="teamnme">{{teammember}}</h4>
+                <button type="button" class="buttonn {% if teammember in challenged_teams %} active {% endif %} w-button">Invite</button>
+              </div>
+              {% endfor %}
+            </div>
+            <h1 class="invite-members ct">Challenge Teams </h1>
+            {% comment %} <input type="text" class="text-field-5 w-input" maxlength="256" name="field" data-name="Field" placeholder="Search for team name" id="field" required=""> {% endcomment %}
+            <div class="div-block-131">
+              {% for team in all_teams %}
+              <div class="div-block-130"><img src="images/mwJsSm7i_400x400.jpg" loading="lazy" width="71" alt="" class="team-photo">
+                <h4 class="teamnme">{{team}}</h4>
+                <button type="button" class="buttonn {% if team in challenged_teams %} active {% endif %} w-button">Invite</button>
+              </div>
+              {% endfor %}
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

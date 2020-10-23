@@ -2,6 +2,45 @@ from django.db import models
 # Create your models here.
 from django.contrib.auth.models import User
 
+class Team(models.Model):
+    admin = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=250)
+    icon = models.ImageField(upload_to='teams')
+    
+    def __str__(self):
+        return self.name 
+        
+class TeamUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.team) + " - " + str(self.user)
+
+class Tournament(models.Model):
+    name = models.CharField(max_length=250)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    game_name = models.CharField(max_length=250)
+    date = models.DateTimeField()
+    game_length = models.IntegerField() # minutes
+    description = models.TextField()
+    platform = models.CharField(max_length=250)
+    player_amount = models.IntegerField()
+    number_of_teams = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+class Game(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    players = models.ManyToManyField(User)
+    duration = models.IntegerField() # minutes
+
+class Challenge(models.Model):
+    host_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="+")
+    challenged_team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+
 class Community(models.Model):
     name = models.CharField(max_length=300)
     image = models.ImageField(upload_to='uploads/community/')

@@ -1,0 +1,52 @@
+{% extends 'base/base.html' %}
+  {% load static %}
+
+  {% block content %}
+
+  <div class="player-menu">
+    <div class="container-20 w-container">
+      <div id="w-node-06a925cb8f7c-7975f801" class="lgo-div-block"><img src="images/Battlesuite.png" loading="lazy" width="145" alt="" class="lgo"></div>
+      <div class="icon-menu-block"><a href="#" class="forum-icon w-inline-block"><img src="images/whh_community.png" loading="lazy" width="24" alt="" class="form-icon"></a><a href="#" class="w-inline-block"><img src="images/Vector-2.png" loading="lazy" width="21" alt="" class="team-page-icon"></a><a href="#" class="w-inline-block"><img src="images/mdi_tournament.png" loading="lazy" width="25" alt="" class="tournament-icon"></a><a href="#" class="w-inline-block"><img src="images/ant-design_setting-filled.png" loading="lazy" width="25" alt="" class="settingicon"></a><a href="#" class="w-inline-block"><img src="images/make-you-a-professional-gaming-banner-and-profile-picture.jpg" loading="lazy" width="36" sizes="(max-width: 479px) 13vw, (max-width: 767px) 6vw, 36px" srcset="images/make-you-a-professional-gaming-banner-and-profile-picture-p-500.jpeg 500w, images/make-you-a-professional-gaming-banner-and-profile-picture.jpg 550w" alt="" class="tprofileicon"></a></div>
+    </div>
+  </div>
+  <div class="section-20">
+    <div class="w-container">
+      <h4 class="go-back-button">Go back</h4>
+      <h2 class="heeader">Organize Your Tournament</h2>
+      <div class="form-block w-form">
+        <form id="tournament_form" action="{% url 'core:create_tournament' %}" method="POST" name="tournament_form" data-name="Email Form" class="form-6"> {% csrf_token %}
+        <img src="images/carbon_add-alt.png" loading="lazy" width="49" alt="" class="image-70">
+          <label for="name">Name Tournament</label><input type="text" class="w-input" maxlength="256" name="name" data-name="Name" placeholder="" id="name"> 
+          <label for="name">Platform</label><input type="text" class="w-input" maxlength="256" name="platform" data-name="platform" placeholder="" id="platform"> 
+          <label for="name">Game Name</label><input type="text" class="w-input" maxlength="256" name="game_name" data-name="game_name" placeholder="" id="game_name"> 
+          <label for="email">Team Deathmatch Mode</label>
+          <div class="tournamentmode _1"> 
+            {% for player_amount in team_size_choices %}
+              <input type="radio" id={{player_amount}} name="player_amount" value={{player_amount}}>
+              <label for="male">{{player_amount}}</label><br>
+            {%endfor%}
+          </div>
+          <label for="email">Number of Teams</label>
+          <div class="tournamentmode _1"> 
+            {% for number_of_teams in team_number_choices %}
+              <input type="radio" id={{number_of_teams}} name="number_of_teams" value={{number_of_teams}}>
+              <label for="male">{{number_of_teams}}</label><br>
+            {%endfor%}
+          </div>
+          <label for="email">Match Duration</label>
+          <div class="tournamentmode _1"> 
+            {% for game_length in game_length_choices %}
+              <input type="radio" id={{game_length}} name="game_length" value={{game_length}}>
+              <label for="male">{{game_length}}</label><br>
+            {%endfor%}
+          </div>
+          <label for="email">Describe the Tournament</label><textarea required="" maxlength="5000" id="description" name="description" placeholder="Add full details about tournament and rules" class="textarea-2 w-input"></textarea>
+          <label for="email">Enter Date of Tournament</label><input type="datetime-local" id="date" name="date">
+          <input type="submit" value="Next" data-wait="Please wait..." class="w-button"></form>
+          </form>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+
+ 

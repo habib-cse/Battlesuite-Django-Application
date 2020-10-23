@@ -16,6 +16,8 @@ urlpatterns = [
     path("tournament/mytournament/", views.tournament_mytournament, name="mytournament"),
     path("tournament/challenges/", views.tournament_challenges, name="challenges"),
     path("tournament/invites/", views.tournament_invites, name="invites"),
+    path("create-tournament/", views.create_tournament, name="create_tournament"),
+    path("create-tournament/invite/", views.edit_tournament, name="edit_tournament"),
     path('<str:name>/', views.property, name='property'),
 
 ]

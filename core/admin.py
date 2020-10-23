@@ -6,7 +6,12 @@ from .models import (
     Like,
     Usercomment,
     Agency,
-    Property
+    Property,
+    Team,
+    TeamUser,
+    Game,
+    Challenge,
+    Tournament
 )
 
 # Register your models here.
@@ -17,3 +22,8 @@ admin.site.register(Like)
 admin.site.register(Usercomment)
 admin.site.register(Agency)
 admin.site.register(Property) 
+admin.site.register(Team)
+admin.site.register(TeamUser) 
+admin.site.register(Game)
+admin.site.register(Challenge)
+admin.site.register(Tournament) 

@@ -12,25 +12,26 @@
         <h4 class="header"> Fortnite Leagues</h4>
         <h4 class="header">Tournaments</h4>
       </div>
-      <div class="addcontent-box"><img src="{% static '/project-static/images/clarity_add-line.png' %}" loading="lazy" width="29" alt="" class="image-68"></div>
+      <div class="addcontent-box">
+      <a href="{% url 'core:create_tournament' %}"><img src="{% static '/project-static/images/clarity_add-line.png' %}" loading="lazy" width="29" alt="" class="image-68"></a></div>
     </div>
 
   
 
-  {% for tournament_name in tournaments %}
+  {% for tournament in tournaments %}
     <div class="container-51 w-container">
       <div class="tournament-info-box">
         <div class="tournamentname-schedule">
-          <h4 class="tournamentname">{{ tournament_name }}</h4>
+          <h4 class="tournamentname">{{ tournament.game_name }}</h4>
           <h6 class="schedule-info">Scheduled 4 hours from now</h6>
         </div>
         <div class="tournament-mode-info">
-          <h1 class="td-mode">5 V 5</h1>
-          <h1 class="td-mode">8 teams</h1>
-          <h1 class="td-mode">60min</h1>
+          <h1 class="td-mode">{{ tournament.player_amount }} V {{ tournament.player_amount }}</h1>
+          <h1 class="td-mode">{{ tournament.number_of_teams}} teams</h1>
+          <h1 class="td-mode">{{ tournament.game_length }}min</h1>
         </div>
         <div class="div-block-127">
-          <p class="tournamentdescription">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
+          <p class="tournamentdescription">{{ tournament.description }}</p>
         </div>
         <div class="action-button"><a href="#" class="actionbutton _1 w-button">Cancel Tournament</a><a href="#" class="actionbutton et w-button">Edit Tournament</a></div>
       </div>
