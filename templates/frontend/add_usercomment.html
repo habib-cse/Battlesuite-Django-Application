@@ -6,14 +6,8 @@
 {% block title %} Follow Community {% endblock title %} 
 {% block content %} 
 <body>
-  <div class="player-menu">
-    <div class="container-20 w-container">
-      <div id="w-node-20877d5a09ef-841d5252" class="lgo-div-block"><img src="images/Battlesuite.png" loading="lazy" width="145" alt="" class="lgo"></div>
-      <div class="icon-menu-block">
-        {% include 'base/navbar.html' %}  
-      </div>
-    </div>
-  </div>
+
+  {% include 'base/full-navbar.html' %}   
   <div class="container-39 w-container comment_page_area" style="padding-bottom: 30px;">
     <h5 class="go_back"><a href="{% url 'core:community_details' community_forum.community.id %}">Go back</a></h5>
     <h3 style="font-weight: 400;" class="heading-58">Forum of <strong>{{community_forum.community}}</strong> Community</h3> 
@@ -111,6 +105,7 @@
     var close_class = "close-" + id.toString()
 
     var modal = document.getElementById(modal_id); 
+    modal.style.display = "block";
     var btn = document.getElementById(btn_id); 
     var span = document.getElementsByClassName(close_class)[0];
     btn.onclick = function() {

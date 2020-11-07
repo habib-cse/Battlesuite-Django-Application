@@ -1,0 +1,116 @@
+{% extends '../base/base.html' %}
+{% load static %} 
+{% load extra_tags %}
+{% block title %}Default Team{% endblock title %} 
+{% block content %} 
+<body>
+
+  {% include 'base/full-navbar.html' %} 
+  <div class="section-16">
+    <div class="container-31 w-container">
+      <h5 class="heading-45">Teams and Friends<br>Dashboard</h5>
+      <p class="paragraph-3">You have not created a team page yet, please create a team page<br>in order to host a tournament within friends</p>
+      <a href="{% url 'core:create_team' %}" class="button-2 w-button">Create a team</a>
+    </div>
+    <div class="container-32 w-container">
+      <h5 class="heading-46">Friends </h5>
+      <form action="/search" class="search-2 w-form"><input type="search" class="search-input-3 w-input" maxlength="256" name="query" placeholder="Search" id="search" required=""><input type="submit" value="Search" class="search-button-3 w-button"></form>
+    </div>
+    <div class="friends_slider_area w-container">
+      <div class="friend_slider owl-carousel"> 
+          {% if friend_list %} 
+            {% for friend in friend_list.friend_list.all %}
+            <div class="single_frined item"> 
+              <a href="">
+                <div class="friend_image">
+                  <img src="{{friend.mainuser.profile_pic.url}}" alt="">
+                </div> 
+                <p>{{friend}}</p>
+              </a>
+            </div>
+            {% endfor %}  
+          {% endif %} 
+      </div>
+    </div>
+    
+    <div class="container-32 w-container">
+      <h5 class="heading-46">Joined Teams</h5>
+    </div>
+
+    <div class="friends_slider_area w-container">
+      <div class="friend_slider owl-carousel"> 
+          {% if team_list %} 
+            {% for team in team_list %}
+              
+              {% if request.user.id|check_team:team.id %}
+                <div class="single_frined item"> 
+                  <a href="{% url 'core:team_details' team.id %}">
+                    <div class="friend_image">
+                      <img src="{{team.logo.url}}" alt="">
+                    </div> 
+                    <p>{{team}}</p>
+                  </a>
+                </div>
+              {% endif %} 
+            {% endfor %}  
+          {% endif %} 
+      </div>
+    </div>
+
+
+  </div> 
+  {% endblock content %}
+
+
+
+{% block script %}
+<script>
+
+  $(document).ready(function(){
+    
+    $('.friend_slider.owl-carousel').owlCarousel({
+      loop:false,
+      margin:10,
+      nav:true,
+      autoplay:true,
+      responsive:{
+          0:{
+              items:1
+          },
+          600:{
+              items:3
+          },
+          1000:{
+              items:6
+          }
+      }
+  })
+
+  });
+/*
+  function addLike(cid){ 
+    $.ajax({
+      url:"{% url 'core:add_like' %}",
+      type: 'get',
+      data:{
+        content_id: cid
+      },
+      success: function(response){
+        var like_id = "like-" + cid.toString(); 
+        var like_number = "likes-" + cid.toString(); 
+
+        document.getElementById(like_id).style.color = 'green';
+        document.getElementById(like_id).style.cursor = 'not-allowed' ;
+        var number_of_comment = document.getElementById(like_number).getAttribute('data-value');
+        number_of_comment = parseInt(number_of_comment) + 1
+        document.getElementById(like_number).innerHTML = number_of_comment
+      },
+      error: function(response){
+        alert("Somthing is missing")
+      }
+    });
+  }
+
+*/
+</script>
+{% endblock script %}

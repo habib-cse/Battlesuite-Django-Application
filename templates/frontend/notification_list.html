@@ -1,0 +1,61 @@
+{% extends '../base/base.html' %}
+{% load static %} 
+{% load extra_tags %}
+{% load humanize %}
+{% block title %}Default Team{% endblock title %} 
+{% block content %} 
+
+<body>
+
+  {% include 'base/full-navbar.html' %} 
+  <section class="messages">
+    <div class="container">
+      
+      {% if messages %} 
+        {% for message in messages %}
+          <p style="text-align:center;padding-top:20px;margin-bottom:-20px;font-size:16px;color:green;">{{message}}</p>
+        {% endfor %} 
+      {% endif %}
+        
+    </div>
+  </section>
+  <section class="notification_area">
+    <div class="container">
+      <h2>Notifications</h2>
+      <div class="infinite-container">
+        {% if notifications %} 
+          {% for notification in notifications %}  
+            <div class="infinite-item alert {% if notification.id|view_status_check %} viewd {% endif %}"> 
+              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+              <a href="{% url 'core:notification_details' notification.id %}">{{notification.title|safe}} <span>{{notification.date|naturaltime }}</span></a>
+              </div> 
+          {% endfor %} 
+        {% endif %}  
+      </div>
+      {% if notifications.has_next %}
+      <a class="infinite-more-link" href="?page={{ notifications.next_page_number }}"></a>
+    {% endif %} 
+      
+    </div>
+
+  </section>
+  {% endblock content %}
+  
+  {% block script %}
+    <script>
+      var infinite = new Waypoint.Infinite({
+        element: $('.infinite-container')[0],
+        offset: 'bottom-in-view',
+  
+        onBeforePageLoad: function () {
+          
+        },
+        onAfterPageLoad: function ($items) {
+           
+        }
+      }); 
+    </script>
+  {% endblock script %}
+    
+
+

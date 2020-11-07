@@ -32,6 +32,7 @@ input[type=submit]{
 .circle-image img{
     border-radius: 500px;
     width: 200px;
+    height:200px;
 }
 .w-container.community_area {
 	overflow: hidden;
@@ -157,6 +158,9 @@ body .desc {
     width: 60px;
     border-radius: 42px;
     height: 60px;
+}
+.owl-dots {
+    display: none !important;
 }
 .user_comment_text {
     float: left;
@@ -360,7 +364,7 @@ body .desc {
 .following_community_area .w-container.community_area {
     overflow: unset;
 }
-.following_community_area button span {
+.following_community_area button span,.friends_slider_area button span {
     font-size: 25px;
     width: 30px;
     height: 30px;
@@ -369,13 +373,14 @@ body .desc {
     border-radius: 40px;
     padding: 0px;
 }
-.following_community_area button.owl-prev {
+
+.following_community_area button.owl-prev,.friends_slider_area button.owl-prev {
     position: absolute;
     top: 30%;
     left: -40px;
     z-index: 9999;
 } 
-.following_community_area button.owl-next {
+.following_community_area button.owl-next,.friends_slider_area button.owl-next {
     position: absolute;
     top: 30%;
     right: -40px;
@@ -417,4 +422,224 @@ ul.ui-menu {
 }
 .preview_image h5 {
 	margin-bottom: 0;
+}
+.single_frined {
+    text-align: center;
+}
+.friend_image {
+	width: 130px;
+	height: 130px;
+	border-radius: 150px;
+	overflow: hidden;
+	background-color: #ddd;
+	border: 2px solid #ddd;
+	text-align: center;
+	margin: 0 auto;
+}
+.single_frined a{
+    text-decoration: none;
+}
+.single_frined p {
+    font-size: 18px;
+    font-weight: bold;
+    color: rgba(88, 30, 233, 0.6);
+    margin-top: 10px;
+    text-decoration: none;
+}
+body .profile-menu.w-inline-block {
+	width: 35px;
+	height: 35px;
+	overflow: hidden;
+	display: block;
+	border-radius: 500px;
+}
+.image-12 {
+    border-radius: 200px;
+    width: 35px;
+    border: 2px solid rgba(35, 31, 226, 0.88);
+    height: 35px;
+}
+
+body .container-12{
+    top: 0
+}
+.team_background_image p {
+    font-size: 20px;
+    color: rgba(83, 50, 233, 0.59);
+}
+.team_background_image {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    overflow: hidden;
+    display: block;
+    text-align: center;
+}
+
+.hash_list {
+	overflow: hidden;
+}
+.single_tags {
+	float: left;
+	width: 20%;
+}
+.single_tags input {
+	float: left;
+	width: 20px;
+	margin-right: 3px;
+	margin-top: 4px;
+}
+.team_input {
+	width: 350px;
+	text-align: center;
+}
+.team_input input {
+	display: block;
+	margin-bottom: 15px;
+}
+.team_input button {
+	background: rgba(83, 50, 233, 0.59);
+	color: #fff;
+	font-size: 16px;
+	padding: 10px 20px;
+	line-height: 1;
+	border-radius: 5px;
+    width: 100px;
+    margin-bottom:20px;
+}
+
+.owl-dots {
+    display: none !important;
+}
+.single_frined.team_create_friend p {
+	font-size: 16px;
+	margin-bottom: 5px;
+}
+.single_frined.team_create_friend label p {
+	font-size: 15px;
+	font-weight: 400;
+	margin-top: 0;
+}
+.alert {
+	overflow: hidden;
+	background-color: #bbb;
+	color: white;
+	margin-bottom: 2px;
+	border-radius: 3px;
+}
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+
+
+.alert span.closebtn {
+    padding: 18px;
+    float: right;
+    width: 10%;
+    text-align: right;
+}
+.alert a {
+	text-decoration: none;
+	color: #000;
+	display: inline-block;
+	width: 85%;
+	padding: 18px;
+	float: left;
+}
+.alert a span {
+	color: green;
+	font-size: 12px;
+}
+.container{
+    width: 940px;
+    margin: 0 auto;
+}
+.notification_area{
+    padding: 30px 0 50px;
+}
+.notification_area h2{
+    font-size: 24px;
+    font-weight:400;
+    margin-bottom: 30px;
+    color: rgba(83, 50, 233, 0.59);
+}
+.alert.viewd {
+	background: #ccc;
+}
+.slider_titles {
+	color: #a493f1;
+	font-size: 24px;
+	margin-top: 40px;
+	margin-bottom: 20px;
+}
+.notification-details {
+	background: #eee;
+	padding: 20px 30px 34px;
+	border-radius: 5px;
+}
+.notification_message {
+	overflow: hidden;
+}
+.blue_bg_teamplayer.team-background {
+    background-color: blue;
+    background-image: none;
+}
+.friends_slider_area input {
+    width: 60%;
+    margin-bottom: 20px;
+    border-radius: 50px;
+}
+.div-block-80{
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+.div-block-80:hover a{
+    opacity: 1;
+    top: 19px;  
+    z-index: 999;
+}
+.div-block-80 a {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    width: 200px;
+    background: green;
+    z-index: 9999;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 3px;
+    padding: 9px;
+    color: #fff;
+    z-index: -999;
+    opacity: 0;
+    transition: all 0.5s;
+}
+.modal-footer ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.modal-footer ul li{
+    display: inline; 
+    list-style: none;
+}
+.modal-footer ul li a{
+    display:inline-block;
+    background:green;
+    color:#fff;
+    padding:10px 15px;
+    line-height:1;
+    text-decoration:none;
 }

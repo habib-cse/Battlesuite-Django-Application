@@ -1,0 +1,27 @@
+{% extends '../base/base.html' %}
+{% load static %} 
+{% load extra_tags %}
+{% load humanize %}
+{% block title %}Default Team{% endblock title %} 
+{% block content %} 
+
+<body>
+
+  {% include 'base/full-navbar.html' %} 
+  <section class="notification_area">
+    <div class="container">
+        <div class="notification-details">
+            <h2> <a style="text-decoration:none;color:inherit" href="{% url 'core:notification_list' %}"><i class="far fa-hand-point-left"></i> Back to Notifications</a> </h2> 
+            <h3>{{notification.title}}</h3>
+            <div class="notification_message">
+                {{notification.message|safe}}
+            </div>
+        </div>
+      
+    </div>
+
+  </section>
+  {% endblock content %}
+   
+
+

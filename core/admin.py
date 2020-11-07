@@ -4,9 +4,14 @@ from .models import (
     Follow,
     Communityforum,
     Like,
-    Usercomment,
-    Agency,
-    Property
+    Usercomment, 
+    Hashtag,
+    Friend,
+    Notification,
+    Team,
+    Teaminvite,
+    Friendrequest,
+    Foruminappropiate,
 )
 
 # Register your models here.
@@ -15,5 +20,11 @@ admin.site.register(Follow)
 admin.site.register(Communityforum)
 admin.site.register(Like)
 admin.site.register(Usercomment)
-admin.site.register(Agency)
-admin.site.register(Property) 
+admin.site.register(Hashtag) 
+admin.site.register(Friend) 
+admin.site.register(Notification) 
+admin.site.register(Team)  
+admin.site.register(Teaminvite)  
+admin.site.register(Friendrequest)  
+admin.site.register(Foruminappropiate)  
+ 

@@ -1,0 +1,109 @@
+{% extends '../base/base.html' %}
+{% load static %} 
+{% load extra_tags %}
+{% block title %}Team Details{% endblock title %} 
+{% block content %} 
+<body>
+
+  {% include 'base/full-navbar.html' %}
+  <div class="section-14">
+    <h5 class="heading-44">Go back</h5>
+    <div class="container-28 w-container">
+      <form action="" class="search w-form" method="POST">{% csrf_token %}
+        <input type="search" class="search-input-2 w-input" maxlength="256" name="query" placeholder="Search" id="search" required>
+        <input style="width:150px" type="submit" value="Search" class="search-button-2 w-button">
+      </form>
+    </div>
+    <div class="container-27 w-container">
+      <p class="paragraph-2">Search Up For Players or Teams Name</p>
+    </div> 
+
+  </div>
+  {% if query_team %} 
+  <div class="friends_slider_area container">
+    <h2 class="slider_titles">Search Result for Team</h2>
+    <div class="friend_slider owl-carousel" style="width:900px">  
+      
+      
+        {% for team in query_team %}
+        <div class="single_frined team_create_friend item">  
+          <a href="{% url 'core:team_details' team.id %}">
+            <div class="friend_image">
+              <img src="{{team.logo.url}}" alt="">
+            </div>  
+            <p>{{team.name}}</p> 
+          </a>
+        </div>
+        {% endfor %} 
+    </div>
+  </div> 
+  {% endif %} 
+  {% if query_player %} 
+  <div class="friends_slider_area container">
+    <h2 class="slider_titles ">Search Result for Player</h2>
+    <div class="friend_slider owl-carousel container" style="width:900px">  
+        {% for friend in query_player %}
+        <div class="single_frined team_create_friend item">  
+          <a href="{% url 'core:player_profile' friend.id %}">
+            <div class="friend_image">
+              <img src="{{friend.mainuser.profile_pic.url}}" alt="">
+            </div>  
+            <p>{{friend}}</p> 
+          </a>
+        </div>
+        {% endfor %}  
+    </div>
+  </div>
+   
+  {% endif %} 
+
+  
+  <div class="friends_slider_area container"> 
+
+    <h2 class="slider_titles">Recent Team</h2>
+    <div class="friend_slider owl-carousel" style="width:900px">  
+      {% if team_list %} 
+        {% for team in team_list %}
+        <div class="single_frined team_create_friend item">  
+          <a href="{% url 'core:team_details' team.id %}">
+            <div class="friend_image">
+              <img src="{{team.logo.url}}" alt="">
+            </div>  
+            <p>{{team.name}}</p> 
+          </a>
+        </div>
+        {% endfor %}  
+      {% else %}
+        <p style="display:block; width: 800px; margin: 0 auto;">No Team member in this team</p>
+      {% endif %} 
+    </div>
+  </div>
+   
+ {% endblock content %}
+  
+  {% block script %}
+    <script>
+      $(document).ready(function(){
+    
+        $('.friend_slider.owl-carousel').owlCarousel({
+          loop:false,
+          margin:10,
+          nav:true,
+          autoplay:true,
+          responsive:{
+              0:{
+                  items:1
+              },
+              600:{
+                  items:3
+              },
+              1000:{
+                  items:5
+              }
+          }
+      })
+    
+      });
+    </script>
+  {% endblock script %}
+    

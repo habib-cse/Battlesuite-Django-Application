@@ -1,0 +1,208 @@
+{% extends '../base/base.html' %}
+{% load static %} 
+{% load extra_tags %}
+{% block title %}Create Team{% endblock title %} 
+{% block content %} 
+<body>
+
+  {% include 'base/full-navbar.html' %} 
+  <div class="section-17">
+    <form action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+      <div id="bg_image" class="team-background crt"> 
+      </div>
+      <div class="team_background_image"> 
+        
+        {% for message in messages %}
+          <p style="color:red">You have selected more than 8 Hashtags</p>
+        {% endfor %}
+          
+        <div class="file_input"> 
+          <input type="file" name="background_image" id="file" onchange="loadFile(event)" required> 
+        </div>
+        <p>Add background photo</p>
+      </div> 
+      <div class="teamlogo-block crt">
+        <img id="output" src="{% static '/project-static/images/pure-black-background-f82588d3.jpg' %}" loading="lazy" width="131" alt="" class="teamlogo crt">
+        <div class="team_background_image">
+          <div class="file_input">
+            <input type="file" name="team_logo" id="file" onchange="loadLogo(event)" required> 
+          </div>
+          <p>Add Team Logo</p>
+        </div> 
+
+        <div class="team_input">
+          <input type="text" name="team_name" placeholder="Team Name"> 
+        </div>
+        <div class="friends_slider_area w-container" style="text-align:center">
+          <h2 style="font-size:24px;margin-bottom:0;color:rgba(83, 50, 233, 0.59);font-weight:400">Send Invite to Friends</h2>
+          <p style="color:green;margin-bottom:15px">You can send invite to maximum 10 Friends</p>
+          <div class="friend_slider owl-carousel" style="width:900px">  
+            
+              {% if friend_list %} 
+                {% for friend in friend_list.friend_list.all %}
+                <div class="single_frined team_create_friend item">  
+                    <div class="friend_image">
+                      <img src="{{friend.mainuser.profile_pic.url}}" alt="">
+                    </div>  
+                    <p>{{friend}}</p>
+                    <label for="checkbox-{{friend.id}}">
+                      <input onchange="checkboxes()" class="teamcheckbox" type="checkbox" value={{friend.id}} name="members[]" id="checkbox-{{friend.id}}" style="display:none"> 
+                      <p onclick="inviteSent({{friend.id}});" id="invite-{{friend.id}}">Invite Friend</p>
+                      <p onclick="cancelInvite({{friend.id}})" id="cancel-{{friend.id}}" style="display:none;color:green;">Cancel</p>
+                    </label>  
+                </div>
+                {% endfor %}  
+              {% else %}
+                <p style="display:block;text-align:center; width: 800px; margin: 0 auto;">No Friends in your Friend list</p>
+              {% endif %} 
+          </div>
+        </div> 
+
+        <div class="team_input">
+          <button id="next_button" type="button" onclick="hashModal()">Next</button> 
+          <div id="hastag_modal" class="modal"> 
+            <div class="modal-content">
+              <div class="modal-header">
+                <span class="close">&times;</span><h2>Select Hash Tags</h2>
+                <p style="color:green">You can Select maximum 8 Hashtags</p>
+              </div>  
+                <div class="modal-body">
+                    <div class="hash_list"> 
+                      {% for hastag in hash_tags %}
+                      <div class="single_tags">
+                        <input type="checkbox" id="check-{{hastag.id}}" name="tags[]" value="{{hastag.id}}" onchange = "checkHash()" class="hashtagcheckbox"><p>{{hastag}}</p>
+                      </div>
+                      {% endfor %} 
+                    </div> 
+                </div> 
+                <div class="modal-footer">
+                  <input type="submit" value="Done"> 
+                </div>
+              </form>
+            </div> 
+          </div>
+        </div>
+      </div> 
+    </form> 
+  </div>
+  {% endblock content %}
+  {% block script %}
+  <script> 
+    $(document).ready(function(){
+    
+      $('.friend_slider.owl-carousel').owlCarousel({
+        loop:false,
+        margin:10,
+        nav:true,
+        autoplay:true,
+        responsive:{
+            0:{
+                items:1
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:6
+            }
+        }
+    })
+  
+    });
+ 
+
+    //Hash Tag amount check 
+    function checkHash(){
+      var inputElems = document.getElementsByClassName("hashtagcheckbox");
+      hascount = 0;
+      for (var i=0; i<inputElems.length; i++) {
+        if (inputElems[i].checked === true){
+          hascount++; 
+        }
+      }
+      if(hascount > 7){
+        alert("You have selected your maximum number of HASHTAGS") 
+      } 
+    };
+
+    //Member amount Check
+    function checkboxes(){
+      var inputElems = document.getElementsByClassName("teamcheckbox");
+      count = 0;
+      for (var i=0; i<inputElems.length; i++) {
+        if (inputElems[i].checked === true){
+            count++; 
+        }
+      }
+      if(count > 9){
+        alert("You have selected your maximum number of team member.") 
+      } 
+    };
+
+    //Friend Invite send 
+    function inviteSent(id){
+      var checkbox_id = "check-"+id.toString();
+      var invite_id = "invite-"+id.toString();
+      var cancel_id = "cancel-"+id.toString();
+      document.getElementById(checkbox_id).checked = true;
+      document.getElementById(invite_id).style.display="none";
+      document.getElementById(cancel_id).style.display = 'block'; 
+    } 
+
+    function cancelInvite(id){
+      var checkbox_id = "check-"+id.toString();
+      var invite_id = "invite-"+id.toString();
+      var cancel_id = "cancel-"+id.toString();
+      document.getElementById(checkbox_id).checked = false;
+      document.getElementById(invite_id).style.display="block";
+      document.getElementById(cancel_id).style.display = 'none'; 
+    } 
+
+
+
+
+    
+
+    var loadFile = function(event) { 
+        image_url = URL.createObjectURL(event.target.files[0]); 
+        var bg_div = document.getElementById("bg_image");
+        bg_div.style.backgroundImage = "url("+image_url+")"; 
+        
+    };
+
+    var loadLogo = function(event) {
+      let image = document.getElementById('output'); 
+      image.src = URL.createObjectURL(event.target.files[0]); 
+      let image_old = document.getElementById('input'); 
+      image_old.src = "";  
+        
+    };
+ 
+
+    // Modal Javascrpt
+    function hashModal(){ 
+      console.log("function working");
+      var modal = document.getElementById("hastag_modal"); 
+      modal.style.display = "block";
+      var btn = document.getElementById("next_button");
+      var span = document.getElementsByClassName('close')[0];
+      
+      btn.onclick = function() {
+        modal.style.display = "block";
+      }  
+      span.onclick = function() {
+        modal.style.display = "none";
+      } 
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    };
+
+
+
+
+
+    </script>
+  {% endblock script %}

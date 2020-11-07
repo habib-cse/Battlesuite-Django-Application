@@ -39,8 +39,6 @@ def profile_create(request):
                     fname = fs.save(profile_pic.name, profile_pic)
                     upload_file_url = fs.url(fname) 
                     Mainuser.objects.create(user_id = user.id,status=True, profile_pic = profile_pic)
-            
-                    
                     logout(request)
                     messages.success(request, "Profile created successfully") 
                     return redirect('accounts:user_login')

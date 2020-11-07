@@ -5,14 +5,8 @@
 {% block title %} Follow Community {% endblock title %} 
 {% block content %} 
 <body>
-  <div class="player-menu">
-    <div class="container-20 w-container">
-      <div id="w-node-f878ccf7b087-6fb1190e" class="lgo-div-block"><img src="" loading="lazy" width="145" alt="" class="lgo"></div>
-      <div class="icon-menu-block">
-        {% include 'base/navbar.html' %}  
-      </div>
-    </div>
-  </div>
+ 
+  {% include 'base/full-navbar.html' %}  
   <div class="following_community_area"> 
     <div class="w-container community_area owl-carousel">
      
@@ -36,49 +30,56 @@
         </div>
         <div class="div-block-72">
           <a href="{% url 'core:add_communitycontent' community.id %}" class="link-block-3 w-inline-block"><img src="{% static '/project-static/images/clarity_add-line.png' %}" loading="lazy" width="30" alt="" class="add-content"></a>
-          <a href="" class="w-inline-block"><img src="{% static '/project-static/images/carbon_search-1.png' %}" loading="lazy" width="27" alt="" class="search-for-teams-players"></a>
+          <a href="{% url 'core:search_team_player' %}" class="w-inline-block"><img src="{% static '/project-static/images/carbon_search-1.png' %}" loading="lazy" width="27" alt="" class="search-for-teams-players"></a>
         </div>
       </div> 
       
       {% if comment_list %}
         
         {% for comment in comment_list %}
-          <div class="forum-content">
-            <div class="headpost">
-              <div id="w-node-9fa1862b6b81-6fb1190e" class="profile-photo-block"> 
-                  {% if comment.user.mainuser.profile_pic %}
-                    <img src="{{comment.user.mainuser.profile_pic.url}}" loading="lazy" width="41" sizes="41px"alt="" class="profile">
-                  {% else %}
-                    <img src="{% static '/static/project-static/images/user.png' %}" loading="lazy" width="41" sizes="41px"alt="" class="profile">
-                  {% endif %}
+          
+          {% if not request.user.id|inappropiate_post:comment.id %}
+            <div class="forum-content">
+              <div class="headpost">
+                <div id="w-node-9fa1862b6b81-6fb1190e" class="profile-photo-block"> 
+                    {% if comment.user.mainuser.profile_pic %}
+                      <img src="{{comment.user.mainuser.profile_pic.url}}" loading="lazy" width="41" sizes="41px"alt="" class="profile">
+                    {% else %}
+                      <img src="{% static '/static/project-static/images/user.png' %}" loading="lazy" width="41" sizes="41px"alt="" class="profile">
+                    {% endif %}
+                  </div>
+                <div class="username-block">
+                  <h4 class="prfl-name">{{comment.user.username}}</h4>
+                  <h6 class="time">{{comment.datetime|naturaltime}}</h6>
                 </div>
-              <div class="username-block">
-                <h4 class="prfl-name">{{comment.user.username}}</h4>
-                <h6 class="time">{{comment.datetime|naturaltime}}</h6>
+                <div class="div-block-80">
+                  <img src="{% static '/project-static/images/eva_more-vertical-fill.png' %}" loading="lazy" width="20" alt="" class="lear-more-icon">
+                <a href="{% url 'core:create_inappropiate_post' comment.id community.id %}">Find post inappropriate?</a>
+                </div>
               </div>
-              <div class="div-block-80"><img src="{% static '/project-static/images/eva_more-vertical-fill.png' %}" loading="lazy" width="20" alt="" class="lear-more-icon"></div>
-            </div>
-            <div class="post-section"><img src="{{comment.image.url}}" loading="lazy" width="311" height="330" alt="" class="image-content"></div>
-            <div class="description-box">
-              <div class="desc">
-                <p class="text">{{comment.content}}</p>
+              <div class="post-section"><img src="{{comment.image.url}}" loading="lazy" width="311" height="330" alt="" class="image-content"></div>
+              <div class="description-box">
+                <div class="desc">
+                  <p class="text">{{comment.content}}</p>
+                </div>
               </div>
-            </div>
-            <div class="recommendation-block">
-              <div class="recommendation-box comment_boxs">
-                <a href="{% url 'core:add_usercomment' comment.id %}"><i class="fas fa-comment"></i> <span>{{comment.id|comment_count|intword}}</span></a> 
-                
-                {% if request.user.id|liked:comment.id %}
-                  <span class="like_icon"><i style="color: green;cursor:not-allowed;" class="fas fa-thumbs-up"></i></span>
-                {% else %}
-                  <span class="like_icon"><i id="like-{{comment.id}}" onclick="addLike({{comment.id}})" class="fas fa-thumbs-up"></i></span>
-                {% endif %}
+              <div class="recommendation-block">
+                <div class="recommendation-box comment_boxs">
+                  <a href="{% url 'core:add_usercomment' comment.id %}"><i class="fas fa-comment"></i> <span>{{comment.id|comment_count|intword}}</span></a> 
                   
-                
-                <h6 id="likes-{{comment.id}}" class="ofinteraction" data-value="{{ comment.id|total_number_of_like }}">{{ comment.id|total_number_of_like }}</h6>
+                  {% if request.user.id|liked:comment.id %}
+                    <span class="like_icon"><i style="color: green;cursor:not-allowed;" class="fas fa-thumbs-up"></i></span>
+                  {% else %}
+                    <span class="like_icon"><i id="like-{{comment.id}}" onclick="addLike({{comment.id}})" class="fas fa-thumbs-up"></i></span>
+                  {% endif %}
+                    
+                  
+                  <h6 id="likes-{{comment.id}}" class="ofinteraction" data-value="{{ comment.id|total_number_of_like }}">{{ comment.id|total_number_of_like }}</h6>
+                </div>
               </div>
             </div>
-          </div>
+          {% endif %} 
+          
         {% endfor %}
       {% else %}
       <h3 id="w-node-42f21814854a-6fb1190e" class="heading-38" style="margin-bottom: 50px; margin-top:20px">No Comments for this Community</h3>

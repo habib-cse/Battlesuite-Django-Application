@@ -25,7 +25,26 @@
           {% if request.user.mainuser.pro_status %}
             <a href="{% url 'core:follow_community' %}" class="bap-button w-button">Access Pro</a>
           {% else %}
-            <a href="{% url 'accounts:become_pro' %}" class="bap-button w-button">Become a pro</a>
+            <a id="modal_button" class="bap-button w-button" onclick="modalshow()">Become a pro</a> 
+            <div id="editteam_modal" class="modal" style="display:none;"> 
+              <div class="modal-content"> 
+                  <div class="modal-header">
+                    <span class="close">&times;</span><h2>Update Player Profile</h2>
+                  </div>
+                  <div class="modal-body"> 
+                    <h2>Become a pro</h2>
+                     <p>want to start hosting your own tournament with friends and family<br>with our automating bracket system. Feel free to join the side.</p> 
+                  </div> 
+                  <div class="modal-footer" style="margin-left: 16px;"> 
+                    <ul>
+                      <li><a href="{% url 'accounts:pro_status' 'xbox' %}">Agreed</a></li>
+                      <li><a href="">Cancel</a></li>
+                    </ul>
+                  </div>
+                </form>
+              </div> 
+            </div> 
+
           {% endif %}
               
           
@@ -111,3 +130,27 @@
     </div>
   </div>
   {% endblock content %}
+  
+  {% block script %}
+    <script>
+      function modalshow(){ 
+
+        var modal = document.getElementById('editteam_modal'); 
+        modal.style.display = "block";
+        var btn = document.getElementById('modal_button'); 
+        var span = document.getElementsByClassName('close')[0];
+        btn.onclick = function() {
+          modal.style.display = "block";
+        } 
+        span.onclick = function() {
+          modal.style.display = "none";
+        } 
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+      }
+    </script>
+  {% endblock script %}
+    

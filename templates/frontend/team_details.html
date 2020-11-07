@@ -1,0 +1,330 @@
+{% extends '../base/base.html' %}
+{% load static %} 
+{% load extra_tags %}
+{% block title %}Team Details{% endblock title %} 
+{% block content %} 
+<body>
+
+  {% include 'base/full-navbar.html' %} 
+  <div class="section-11">
+    <div class="team-background" style="background-image:url({{team.background_image.url}})"></div>
+    <div class="container-12 w-container">
+      <div id="w-node-fb9ce5552c4c-d514f07c" class="matches-stats-block"><img src="{% static '/project-static/images/bx_bx-medal.png' %}" loading="lazy" width="39" alt="" class="matches-medalion">
+        <div class="winning m">2.1k</div>
+      </div>
+      <div class="teamlogo-block"><img style="margin-top:-50px;width:110px; height:110px" src="{{team.logo.url}}" loading="lazy" width="103" alt="" class="teamlogo"></div>
+      <div class="tounament-stats">
+        <div class="winning t">100</div><img src="{% static '/project-static/images/Vector-1.png' %}" loading="lazy" width="33" alt="" class="tournament-champion"></div>
+    </div>
+    <div class="more-about-team-container w-container">
+      <div class="div-block-41" style="margin-left:0; margin-right: 0;">
+        <div class="div-block-43">
+          <h4 class="tname">{{team.name}}</h4>
+        </div>
+        <div class="hashtags-block">  
+          {% for tag in team.hastag.all %}
+            <a href="" class="hashtags">#{{tag}}</a>
+          {% endfor %} 
+        </div>
+        <div>
+          <h6 class="admin-name">{{team.admin.username}}</h6>
+        </div>
+        <div class="subscribe-block">
+          
+          {% if team.admin.id == request.user.id %}
+            <a  class="button-4 w-button" id="modal_button" onclick="modalshow()">Edit Team Page</a> 
+            <div id="editteam_modal" class="modal"> 
+              <div class="modal-content">
+                <form action="{% url 'core:team_update' team.id %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                  <div class="modal-header">
+                    <span class="close">&times;</span><h2>Update Team</h2>
+                  </div>
+                  <div class="modal-body"> 
+                    <div class="single_form">
+                      <p>Upload Background Image</p> 
+                      <input type="file" name="bg_image">
+                    </div>
+                    <div class="single_form">
+                      <p>Upload Logo Image</p> 
+                      <input type="file" name="logo_image">
+                    </div>
+                  </div> 
+                  <div class="modal-footer">
+                    <input type="submit" value="Update"> 
+                  </div>
+                </form>
+              </div> 
+            </div> 
+          {% else %} 
+            {% if request.user.id|team_member_check:team.id %}
+              <a style="background:green" class="button-4 w-button">You are Member of this Team</a>
+            {% else %} 
+              
+              {% if request.user.id|team_invite_check:team.id %} 
+                <a style="background:green" class="button-4 w-button">You alreay sent request</a>
+              {% else %}
+                <a href="{% url 'core:joining_team_request' team.id team.admin.id %}" class="button-4 w-button">Request to Join Team</a>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+          
+          {% if messages %}
+            
+            {% for message in messages %}
+              <p style="color:green">{{message}}</p>
+            {% endfor %}
+              
+          {% endif %}
+            
+            
+          
+        </div>
+         
+      </div>
+    </div>
+    <div class="label-container w-container">
+      <h4 class="team-member">Team Members</h4>
+    </div>
+    <div class="friends_slider_area">
+      <div class="friend_slider owl-carousel container" style="width:900px">  
+        {% if team.team_member.all %} 
+          {% for member in team.team_member.all %}
+          <div class="single_frined team_create_friend item">  
+              <div class="friend_image">
+                <img src="{{member.mainuser.profile_pic.url}}" alt="">
+              </div>  
+              <p>{{member}}</p> 
+          </div>
+          {% endfor %}  
+        {% else %}
+          <p style="display:block; width: 800px; margin: 0 auto;">No Team member in this team</p>
+        {% endif %} 
+    </div>
+    </div>
+    <div class="container-17 w-container">
+      <h4 class="heading-25">Recent Matches</h4>
+    </div>
+    <div data-animation="slide" data-hide-arrows="1" data-duration="500" data-infinite="1" class="slider-4 w-slider">
+      <div class="w-slider-mask"> 
+        <div class="w-slide">
+          <div class="container-16 w-container">
+            <div id="w-node-2ce24cdb9956-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+            <div id="w-node-2ce24cdb9963-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+            <div id="w-node-2ce24cdb9970-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+            <div id="w-node-2ce24cdb997d-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+            <div id="w-node-2ce24cdb998a-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="container-16 w-container">
+            <div id="w-node-2ce24cdb9956-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+            <div id="w-node-2ce24cdb9963-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+            <div id="w-node-2ce24cdb9970-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+            <div id="w-node-2ce24cdb997d-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+            <div id="w-node-2ce24cdb998a-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="container-16 w-container">
+            <div id="w-node-2ce24cdb9956-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+            <div id="w-node-2ce24cdb9963-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+            <div id="w-node-2ce24cdb9970-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+            <div id="w-node-2ce24cdb997d-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+            <div id="w-node-2ce24cdb998a-d514f07c" class="div-block-50">
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">The raiders 89</h4><img src="{% static '/project-static/images/make-you-a-professional-gaming-banner-and-profile-picture.jpg' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">12</h5>
+              </a>
+              <a href="#" class="team-block w-inline-block">
+                <h4 class="tn">Sniper wolves</h4><img src="{% static '/project-static/images/Ellipse-79.png' %}" loading="lazy" width="46" alt="" class="tl">
+                <h5 class="tn">9</h5>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="left-arrow-6 w-slider-arrow-left"><img src="{% static '/project-static/images/bi_arrow-right-circle-fill.png' %}" loading="lazy" alt="" class="image-27"></div>
+      <div class="right-arrow-6 w-slider-arrow-right"><img src="{% static '/project-static/images/bi_arrow-right-circle-fill.png' %}" loading="lazy" alt=""></div>
+      <div class="slide-nav-7 w-slider-nav w-slider-nav-invert w-shadow w-round"></div>
+    </div>
+
+  </div> 
+    
+  {% endblock content %}
+  
+  {% block script %}
+    <script>
+
+    // Modal Javascrpt
+    function modalshow(){
+      // Get the modal 
+  
+      var modal = document.getElementById('editteam_modal'); 
+      modal.style.display = "block";
+      var btn = document.getElementById('modal_button'); 
+      var span = document.getElementsByClassName('close')[0];
+      btn.onclick = function() {
+        modal.style.display = "block";
+      } 
+      span.onclick = function() {
+        modal.style.display = "none";
+      } 
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    }
+
+      $(document).ready(function(){
+    
+        $('.friend_slider.owl-carousel').owlCarousel({
+          loop:false,
+          margin:10,
+          nav:true,
+          autoplay:true,
+          responsive:{
+              0:{
+                  items:1
+              },
+              600:{
+                  items:3
+              },
+              1000:{
+                  items:5
+              }
+          }
+      })
+    
+      });
+    </script>
+  {% endblock script %}
+    
+    

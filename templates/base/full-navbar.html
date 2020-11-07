@@ -1,0 +1,26 @@
+{% load static %}
+{% load extra_tags %}
+<div class="player-menu">
+    <div class="container-20 w-container">
+      <div id="w-node-1bb6d100a73b-3786d3ad" class="lgo-div-block">
+        <img src="{% static '/project-static/images/Battlesuite.png' %}" loading="lazy" width="145" alt="" class="lgo">
+      </div>
+      <div class="icon-menu-block">
+        <a href="{% url 'core:follow_community' %}" class="forum-icon w-inline-block"><img src="{% static '/project-static/images/whh_community.png' %}" loading="lazy" width="24" alt="" class="form-icon"></a>
+        <a href="{% url 'core:team_default' %}" class="w-inline-block"><img src="{% static '/project-static/images/Vector-2.png' %}" loading="lazy" width="21" alt="" class="team-page-icon"></a>
+        <a href="#" class="w-inline-block"><img src="{% static '/project-static/images/mdi_tournament.png' %}" loading="lazy" width="25" alt="" class="tournament-icon"></a>
+        <a href="{% url 'core:notification_list' %}" style="font-size:20px;" class="w-inline-block"><i class="fas fa-bell"></i><span style="color:green;font-size:12px;text-decoration:none">{{request.user.id|unread_notification}}</span></a>
+        <a href="{% url 'core:player_profile' request.user.id %}" class="w-inline-block">
+          {% if request.user.is_authenticated %} 
+            {% if request.user.mainuser.profile_pic %}
+            <img src="{{request.user.mainuser.profile_pic.url}}" loading="lazy" width="34" alt="" class="image-12">
+            {% else %}
+            <img src="{% static '/project-static/images/Ellipse-77.png' %}" loading="lazy" width="34" alt="" class="image-12">
+            {% endif %} 
+          {% else %}
+            <img src="{% static '/project-static/images/Ellipse-77.png' %}" loading="lazy" width="34" alt="" class="image-12">
+          {% endif %}
+        </a>
+      </div>
+    </div>
+  </div>

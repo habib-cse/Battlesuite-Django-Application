@@ -10,6 +10,7 @@ class Mainuser(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(upload_to='uploads/user/', blank=True, null = True)
+    bgimage = models.ImageField(upload_to='uploads/user/', blank=True, null = True)
     pro_status = models.BooleanField(default=False)
     pro_signup_type = models.CharField(choices=TAG, max_length=50, blank=True, null=True)
     status = models.BooleanField(default=False)
