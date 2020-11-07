@@ -15,7 +15,7 @@ SECRET_KEY = 'r4bs$xkifrg18@ogb3n(dve05e6p2v+_kys0uovz2lw75lztt*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['battlesuite.herokuapp.com','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['battlesuite.herokuapp.com']
 
 
 # Application definition
