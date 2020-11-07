@@ -1,0 +1,1 @@
+web: gunicorn battlesuite.wsgi --log-file -

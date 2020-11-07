@@ -15,7 +15,7 @@ SECRET_KEY = 'r4bs$xkifrg18@ogb3n(dve05e6p2v+_kys0uovz2lw75lztt*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['battlesuite.herokuapp.com','127.0.0.1','localhost']
 
 
 # Application definition
@@ -125,7 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/staticfiles/')
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'media/uploads')
 MEDIA_URL = '/media/uploads/'
 STATICFILES_DIRS = (
