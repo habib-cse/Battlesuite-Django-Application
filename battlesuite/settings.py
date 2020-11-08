@@ -15,7 +15,7 @@ SECRET_KEY = 'r4bs$xkifrg18@ogb3n(dve05e6p2v+_kys0uovz2lw75lztt*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['battlesuite.herokuapp.com']
+ALLOWED_HOSTS = ['battlesuite.herokuapp.com','127.0.0.1','localhost']
 
 
 # Application definition
@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'accounts', 
+    'import_export', 
     'core', 
     'django.contrib.humanize',
 
@@ -141,3 +142,5 @@ STATICFILES_DIRS = (
 SITE_ID = 1
 LOGIN_URL = 'accounts:user_login'
 LOGIN_REDIRECT_URL = 'accounts:profile_create' 
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True
