@@ -1,0 +1,85 @@
+
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>The HTML5 Herald</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+  <!-- refresh page every 2 seconds -->
+  {% comment %} <meta http-equiv="Refresh" content="10"> {% endcomment %}
+
+  <!-- jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- materialize CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+  <!-- materialize JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+         
+</head>
+
+<body>
+
+ <div class="container">
+  <h1 class="header center">Test</h1>
+  <div class="row center">
+    <div class="col s6 grey lighten-3" id="addTableHere">
+  {% comment %} <ul>
+    {% for connection in all_connections %} 
+    <li>
+
+    {% if connection.pk == current_pk %}
+    <b>
+    {% endif %}
+
+    {% if connection.pk in ready_list %}
+    <span style="color: green">
+    {% endif %}
+
+    {{ connection.pk }}
+    
+    {% if connection.pk == 244 %}
+    </span>
+    {% endif %}
+
+    {% if connection.pk == current_pk %}
+    </b>
+    {% endif %}
+
+    </li>
+    {% endfor %} 
+  </ul> {% endcomment %}
+  </div>
+  <div class="col s6">
+    <div class="container">
+    <ul>
+      <li>
+  <a class="btn waves-effect waves-light" href="#">Ready</a> 
+      </li><br><li>
+  <a class="btn-small waves-effect waves-light white grey-text" href="{% url 'core:delete_test' %}">Reset</a>
+      </li>
+    </ul>
+  </div>
+  </div>
+</div>
+</div>
+
+  <script>
+  setInterval(function() {
+  $.ajax({
+    type: "GET",
+    url: {% url 'core:get_more_tables' %},  // URL to your view that serves new info
+    data: {'append_increment': 0}
+  }).done(function(response) {
+    $('#addTableHere').html(response);
+  });
+  }, 2000);
+  </script>
+
+</body>
+</html>

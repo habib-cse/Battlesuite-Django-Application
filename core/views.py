@@ -1,111 +1,370 @@
 from django.shortcuts import render, redirect, HttpResponse
+from django.urls import reverse
 from django.http import JsonResponse
-from .models import Community, Follow, Communityforum, Like, Usercomment, Team, TeamUser, Tournament, Challenge
+from .models import (TestConnection, Community, Follow, Communityforum, 
+                    LoadingScreenAdmin, Like, LoadingScreen, Usercomment, 
+                    Game, GameTeam, Team, TeamUser, TournamentTeamUser, 
+                    TournamentTeam, Tournament, Challenge, TournamentInvite, 
+                    TournamentTeam, TournamentRound)
 from .forms import TournamentForm
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import  FileSystemStorage
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.template.defaulttags import register
+from django.contrib.auth.models import User 
+from django.utils.formats import localize
+import dateutil.parser
+import random
+from django.utils import timezone
+
+team_size_choices = ["1 VS 1","2 VS 2","3 VS 3","4 VS 4","5 VS 5"]
+team_number_choices = ["2 Teams", "4 Teams", "8 Teams"]
+game_length_choices = ["40 Minutes","60 Minutes","80 Minutes"]
+
+@register.filter
+def split(string, key):
+    return string.split(key)[0]
 
 # Create your views here.
 def home(request):
-    return render(request,'frontend/index.html'
-    )
+    return render(request,'frontend/index.html')
+
+def delete_test(request):
+    all_connections = TestConnection.objects.all()
+    for connection in all_connections:
+        connection.delete()
+    return redirect(reverse('core:test'))
+
+def get_more_tables(request):
+    all_connections = TestConnection.objects.all()
+
+    context = {
+        "current_pk": 44,
+        "all_connections": all_connections,
+        "ready_list": [244, 245],
+    }
+    return render(request, 'frontend/testpagetable.html', context)
+    # return HttpResponse("<p>tablesssss</p>")
+
+def testpage(request):
+    # if request.method == "POST":
+    #     delete_test()
+    new_connection = TestConnection()
+    new_connection.save()
+
+    current_pk = new_connection.pk
+    all_connections = TestConnection.objects.all()
+
+    context = {
+        "usernames": ["Adam", "Bart", "Casey"],
+        "current_pk": current_pk,
+        "all_connections": all_connections,
+        "ready_list": [244, 245],
+    }
+    return render(request, 'frontend/testpage.html', context)
+
 
 @login_required()
 def create_tournament(request):
+    user_team = TeamUser.objects.get(user=request.user).team
     if request.method=="GET":
-        team_size_choices = ["1 VS 1","2 VS 2","3 VS 3","4 VS 4","5 VS 5"]
-        team_number_choices = ["2 Teams", "4 Teams", "8 Teams"]
-        game_length_choices = ["40 Minutes","60 Minutes","80 Minutes"]
+        tournament = None
+        user_team = TeamUser.objects.get(user=request.user).team
+        if "use_tournament" in request.session:
+            if request.session["use_tournament"]:
+                tournament_pk = request.session["use_tournament"]
+                tournament = Tournament.objects.get(pk = tournament_pk)
         context = {
             "team_size_choices" : team_size_choices,
             "team_number_choices" : team_number_choices,
-            "game_length_choices" : game_length_choices
+            "game_length_choices" : game_length_choices,
+            "tournament": tournament
         }
         return render(request, "frontend/create-my-tournament.html", context=context)
+
     elif request.method=="POST":
         form = TournamentForm(request.POST)
-        tournament = Tournament(name=form.data["name"], 
-                                creator=request.user, 
-                                game_name=form.data["game_name"], 
-                                date=form.data["date"], 
-                                game_length=form.data["game_length"], 
-                                description=form.data["description"], 
-                                platform=form.data["platform"], 
-                                player_amount=form.data["player_amount"], 
-                                number_of_teams=form.data["number_of_teams"])
+        if "use_tournament" in request.session:
+            if request.session["use_tournament"]:
+                tournament_pk = request.session["use_tournament"]
+                tournament = Tournament.objects.get(pk = tournament_pk)
+
+                
+            else:
+                tournament = Tournament(creator=request.user)
+        else:
+            tournament = Tournament(creator=request.user)
+        
+        setattr(tournament, 'name', form.data["name"])
+        setattr(tournament, 'game_name' ,form.data["game_name"])
+        setattr(tournament, 'date' ,dateutil.parser.parse(form.data["date"]))
+        setattr(tournament, 'game_length' ,int(split(form.data["game_length"], " ")))
+        setattr(tournament, 'description' ,form.data["description"])
+        setattr(tournament, 'platform' ,form.data["platform"])
+        setattr(tournament, 'player_amount' ,form.data["player_amount"])
+        setattr(tournament, 'number_of_teams' ,form.data["number_of_teams"])
+
         tournament.save()
-        return render(request, "frontend/create-my-tournament-teams.html")
+        request.session["use_tournament"] = {"tournament": tournament.pk}
 
+        try:
+            relation = TournamentTeam.objects.get(tournament=tournament, team=user_team)
+        except:
+            relation = TournamentTeam(tournament=tournament, team=user_team)
+            relation.save()
+
+        return edit_tournament(request)
+
+@login_required()
 def edit_tournament(request):
-    try:
-        user_team = Team.objects.get(admin=request.user)
-    except:
-        user_team = TeamUser.objects.get(user=request.user).team
+    user_team = TeamUser.objects.get(user=request.user).team
 
-    tournament = Tournament.objects.filter(creator=request.user)[0]
+    tournament = Tournament.objects.get(pk=request.session.get('use_tournament', None)["tournament"])
     
+    if request.method=="POST":
+        if "Challenge-Team" in request.POST:
+            new_challenge = Challenge(tournament=tournament, 
+                                        host_team=user_team,
+                                        challenged_team=Team.objects.get(name=request.POST["Challenge-Team"]))
+            new_challenge.save()
+        elif "Invite-TeamMember" in request.POST:
+            print(request.POST["Invite-TeamMember"])
+            new_invite = TournamentInvite(tournament=tournament,
+                                            user=User.objects.get(pk=request.POST["Invite-TeamMember"]))
+            new_invite.save()
 
     challenged_teams = Challenge.objects.filter(host_team=user_team, tournament=tournament)
     challenged_teams = [relation.challenged_team for relation in challenged_teams]
-    
-    all_teams = [team for team in Team.objects.all() if team not in challenged_teams]
+
+    all_teams = [team for team in Team.objects.all()]
     all_teams.remove(user_team)
 
     teammembers = TeamUser.objects.filter(team=user_team)
-    teammembers = [relation.user for relation in teammembers]
+    teammembers = [relation.user for relation in teammembers if relation.user != request.user]
 
+    invited_teammembers = [TournamentInvite.objects.filter(tournament=tournament, user=tm) for tm in teammembers]
+    invited_teammembers = [queryset[0] for queryset in invited_teammembers if len(queryset)>0]
+    
+    invited_teammembers = [relation.user.username for relation in invited_teammembers]
     context = {
         "all_teams": all_teams,
         "challenged_teams": challenged_teams,
-        "teammembers": teammembers
+        "teammembers": teammembers,
+        "invited_teammembers": invited_teammembers,
+        "user_team": user_team
     }
 
     return render(request, "frontend/create-my-tournament-teams.html", context)
 
 def tournament_mytournament(request):
-    # if request.user:
-    #     user_team = Team.objects.get(admin=request.user)
-    #     all_users = TeamUser.objects.filter(team=user_team)
-    #     print(all_users[0].id)
-    tournaments = Tournament.objects.filter(creator=request.user)
-    context = {
-        "path": "mytournament",
-        "tournaments": tournaments,
-    }
-    return render(request, "frontend/tournament-page-mytournament.html", context)
+    if request.method == "GET":
+        tournaments = Tournament.objects.filter(creator=request.user)
+        tournaments = [[tournament, int((timezone.now() - tournament.date).total_seconds() / (60 * 60))] for tournament in tournaments]
+        print(tournaments)
+        context = {
+            "path": "mytournament",
+            "tournaments": tournaments,
+        }
+        return render(request, "frontend/tournament-page-mytournament.html", context)
+
+    elif request.method == "POST":
+        if 'Edit Tournament' in request.POST:
+            tournament = request.POST['Tournament-To-Edit']
+            request.session["use_tournament"] = tournament
+            request.method = "GET"
+            return create_tournament(request)
+        elif 'Cancel Tournament' in request.POST:
+            print(request.POST['Tournament-To-Edit'])
+            tournament_pk = request.POST['Tournament-To-Edit']
+            tournament = Tournament.objects.get(pk=tournament_pk)
+            tournament.delete()
+            request.method = "GET"
+            return tournament_mytournament(request)
+        elif 'New Tournament.x' in request.POST:
+            request.method = "GET"
+            request.session["use_tournament"] = None
+            return create_tournament(request)
 
 def tournament_challenges(request):
-    try:
-        user_team = Team.objects.get(admin=request.user)
-    except:
-        user_team = TeamUser.objects.get(user=request.user).team
+    user_team = TeamUser.objects.get(user=request.user).team
     challenges = Challenge.objects.filter(challenged_team=user_team)
-    tournaments = [Challenge.tournament for Challenge in challenges]
-
+    
     context = {
         "path": "challenges",
-        "tournaments": tournaments,
+        "challenges": challenges,
     }
-    return render(request, "frontend/tournament-page-challenges.html", context)
 
+    if request.method == "GET":
+        return render(request, "frontend/tournament-page-challenges.html", context)
+
+    elif request.method == "POST":
+        if "Decline Challenge" in request.POST:
+            tournament = request.POST['Tournament-To-Edit']
+            tournament = Tournament.objects.get(pk=tournament)
+            challenge_to_delete = Challenge.objects.get(tournament=tournament, challenged_team=user_team)
+            challenge_to_delete.delete()
+            request.method = "GET"
+            return tournament_challenges(request)
+        elif "Accept Challenge" in request.POST:
+            tournament = request.POST['Tournament-To-Edit']
+            tournament = Tournament.objects.get(pk=tournament)
+            tournament_team = TournamentTeam(tournament=tournament, team=user_team)
+            tournament_team.save()
+            challenge_to_delete = Challenge.objects.get(tournament=tournament, challenged_team=user_team)
+            challenge_to_delete.delete()
+            request.method = "GET"
+            return tournament_challenges(request)
 
 def tournament_invites(request):
-
-    players = [
-        ("The realnivo", "images/mwJsSm7i_400x400.jpg"),
-        ("warrier83", "images/machine-warrior-e-sports-logo-design-machine-warrior-gaming-mascot-twitch-profile_74154-43-p-500.jpeg"),
-        ("Google", "images/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"),
-    ]
+    user_team = TeamUser.objects.get(user=request.user).team
+    invites = TournamentInvite.objects.filter(user=request.user)
 
     context = {
         "path": "invites",
-        "players": players,
+        "invites": invites,
+        "user_team": user_team,
+    }
+    if request.method == "GET":
+        return render(request, "frontend/tournament-page-invites.html", context)
+
+    elif request.method == "POST":
+        if "Decline Invite" in request.POST:
+            tournament = request.POST['Tournament-To-Edit']
+            tournament = Tournament.objects.get(pk=tournament)
+            invite_to_delete = TournamentInvite.objects.get(tournament=tournament, user=request.user)
+            invite_to_delete.delete()
+            request.method = "GET"
+            return tournament_challenges(request)
+        elif "Accept Invite" in request.POST:
+            tournament = request.POST['Tournament-To-Edit']
+            tournament = Tournament.objects.get(pk=tournament)
+            # tournament_team = TournamentTeam(tournament=tournament, team=user_team)
+            # tournament_team.save()
+            invite_to_delete = TournamentInvite.objects.get(tournament=tournament, user=request.user)
+            invite_to_delete.delete()
+            return tournament_challenges(request)
+
+def prepare_tournament_games(tournament):
+    avaliable_teams = [i.team for i in TournamentTeam.objects.filter(tournament=tournament)]
+    tournamentround = TournamentRound(tournament=tournament)
+    tournamentround.save()
+    while len(avaliable_teams)%2 == 0 and len(avaliable_teams)>0:
+        game = Game(tournament=tournament, duration=tournament.game_length)
+
+        teamA = random.choice(avaliable_teams)
+        avaliable_teams.remove(teamA)
+
+        teamB = random.choice(avaliable_teams)
+        avaliable_teams.remove(teamB)
+
+        players_teamA = [i.user for i in TournamentTeamUser.objects.filter(tournament=tournament, team=teamA)]
+        players_teamB = [i.user for i in TournamentTeamUser.objects.filter(tournament=tournament, team=teamB)]
+
+        game.save()
+
+        for player in players_teamA:
+            game.players.add(player)
+        
+        for player in players_teamB:
+            game.players.add(player)
+
+        game_teamA = GameTeam(game=game, team=teamA)
+        game_teamB = GameTeam(game=game, team=teamB)
+
+        game_teamA.save()
+        game_teamB.save()
+
+        tournamentround.games.add(game)
+
+def check_player_conectivity(Game, LoadingScreen):
+    print(Game.players.all())
+    print(LoadingScreen.players.all())
+    for player in Game.players.all():
+        if player not in LoadingScreen.players.all():
+            return False
+    return True
+
+@login_required()
+def tournament_start_waiting(request):
+    user_team = TeamUser.objects.get(user=request.user).team
+    tournament = Tournament.objects.get(creator=1)
+    try:
+        tournamentround = TournamentRound.objects.get(tournament=tournament)
+    except:
+        prepare_tournament_games(tournament)
+
+    games_in_tournament = Game.objects.filter(tournament=tournament)
+    for game in games_in_tournament:
+        if request.user in game.players.all():
+            break
+
+    if len(LoadingScreen.objects.filter(Game=game)) != 0:
+        loadingscreen = LoadingScreen.objects.filter(Game=game)[0]
+    else:
+        loadingscreen = LoadingScreen(Game=game)
+        loadingscreen.save()
+    
+    if request.user not in loadingscreen.players.all():
+        loadingscreen.players.add(request.user)
+
+    teamA = user_team
+    teamB = GameTeam.objects.filter(game=game).exclude(team=teamA)[0].team
+    context = {
+        "game": game,
+        "teamA": teamA,
+        "teamB": teamB
     }
 
-    return render(request, "frontend/tournament-page-invites.html", context)
+    if check_player_conectivity(game, loadingscreen):
+        adminA = teamA.admin
+        adminB = teamB.admin
 
+        chosen_admin = random.choice([adminA, adminB])
+        try: 
+            loadingscreenadmin = LoadingScreenAdmin.objects.get(loadingscreen=loadingscreen)
+        except:
+            loadingscreenadmin = LoadingScreenAdmin(loadingscreen=loadingscreen, admin=chosen_admin)
+            loadingscreenadmin.save()
+        return tournament_admin_start(request)
 
+    return render(request, "frontend/start-tournament-loading-page.html", context)
+
+def tournament_admin_start(request):
+    user_team = TeamUser.objects.get(user=request.user).team
+    tournament = Tournament.objects.get(creator=1)
+
+    games_in_tournament = Game.objects.filter(tournament=tournament)
+    for game in games_in_tournament:
+        if request.user in game.players.all():
+            break
+    
+    enemy_team = [i.team for i in GameTeam.objects.filter(game=game) if i.team != user_team][0]
+    
+    teammembers = [i.user for i in TournamentTeamUser.objects.filter(tournament=tournament, team=user_team)]
+    opponenets = [i.user for i in TournamentTeamUser.objects.filter(tournament=tournament, team=enemy_team)]
+
+    loadingscreen = LoadingScreen.objects.get(Game=game)
+    loadingscreenadmin = LoadingScreenAdmin.objects.get(loadingscreen=loadingscreen)
+
+    if request.method == "POST":
+        print(request.POST)
+        if "Admin Ready" in request.POST:
+            loadingscreenadmin.ready = True
+            loadingscreenadmin.save()
+        
+    context = {
+        "game": game,
+        "teamA": user_team,
+        "teamB": enemy_team,
+        "teammembers": teammembers,
+        "opponenets": opponenets,
+        "loadingscreenadmin": loadingscreenadmin
+    }
+
+    if request.user == loadingscreenadmin.admin:
+        return render(request, "frontend/start-tournament-set-up-admin.html", context=context)
+    else:
+        return render(request, "frontend/start-tournament-set-up-waiting.html",  context=context)
 
 @login_required()
 def follow_community(request):

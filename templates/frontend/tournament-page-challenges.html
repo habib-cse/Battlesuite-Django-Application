@@ -1,10 +1,9 @@
 {% extends "base/tournament_base.html" %}
 {% load static %}
-
 {% block body %} 
- {% for tournament in tournaments %}
-  <div class="container-51 w-container"><img src="{% static '/project-static/images/mwJsSm7i_400x400.jpg' %}" loading="lazy" width="61" alt="" class="teamlgo">
-    <h3 class="team-nme">{{ tournament.creator }}</h3>
+ {% for challenge in challenges %}
+  <div class="container-51 w-container"><img src= "{{challenge.host_team.icon.url}}" loading="lazy" width="61" alt="" class="teamlgo">
+    <h3 class="team-nme">{{ challenge.tournament.creator }}</h3>
     <h5 class="detail">Has challenged to one of his tournament</h5>
     <h5 class="league-nme">{{tournament.game_name}}</h5>
     <div class="tournament-info-box">
@@ -13,14 +12,21 @@
         <h6 class="schedule-info">Scheduled 4 hours from now</h6>
       </div>
       <div class="tournament-mode-info">
-        <h1 class="td-mode">{{tournament.player_amount}} V {{tournament.player_amount}}</h1>
-        <h1 class="td-mode">{{ tournament.number_of_teams}} teams</h1>
-        <h1 class="td-mode">{{ tournament.game_length }} min</h1>
+        <h1 class="td-mode">{{challenge.tournament.player_amount}} V {{challenge.tournament.player_amount}}</h1>
+        <h1 class="td-mode">{{ challenge.tournament.number_of_teams}} teams</h1>
+        <h1 class="td-mode">{{ challenge.tournament.game_length }} min</h1>
       </div>
       <div class="div-block-127">
-        <p class="tournamentdescription">{{ tournament.description }}</p>
+        <p class="tournamentdescription">{{ challenge.tournament.description }}</p>
       </div>
-      <div class="action-button"><a href="#" class="actionbutton _3 w-button">DECLINE CHALLENGE</a><a href="#" class="actionbutton et _2 w-button">ACCEPT CHALLENGE</a></div>
+      <form method="POST" action="{% url 'core:challenges' %}" name="challenge-response">
+        {% csrf_token %}
+        <div class="action-button">
+          <input type="hidden" name="Tournament-To-Edit" value="{{challenge.tournament.pk}}">
+          <button type="submit" name="Decline Challenge" value="Decline Challenge" class="actionbutton _1 w-button" onclick="return confirm('Are you sure you want to decline this Challenge?');">Decline Challenge</button>
+          <button type="submit" name="Accept Challenge" value="Accept Challenge" class="actionbutton action w-button">Accept Challenge</button>
+        </div>
+      </form>
     </div>
   </div>
   {% endfor %}

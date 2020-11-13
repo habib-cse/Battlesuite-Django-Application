@@ -11,7 +11,14 @@ from .models import (
     TeamUser,
     Game,
     Challenge,
-    Tournament
+    Tournament,
+    TournamentInvite,
+    TournamentTeam,
+    TournamentTeamUser,
+    GameTeam,
+    LoadingScreen,
+    TournamentRound,
+    LoadingScreenAdmin
 )
 
 # Register your models here.
@@ -27,3 +34,10 @@ admin.site.register(TeamUser)
 admin.site.register(Game)
 admin.site.register(Challenge)
 admin.site.register(Tournament) 
+admin.site.register(TournamentInvite) 
+admin.site.register(TournamentTeam) 
+admin.site.register(TournamentTeamUser)
+admin.site.register(GameTeam)
+admin.site.register(LoadingScreen)
+admin.site.register(TournamentRound)
+admin.site.register(LoadingScreenAdmin)

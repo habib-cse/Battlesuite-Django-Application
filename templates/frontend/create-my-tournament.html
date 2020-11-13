@@ -1,7 +1,6 @@
 {% extends 'base/base.html' %}
-  {% load static %}
-
-  {% block content %}
+{% load static %}
+{% block content %}
 
   <div class="player-menu">
     <div class="container-20 w-container">
@@ -16,32 +15,31 @@
       <div class="form-block w-form">
         <form id="tournament_form" action="{% url 'core:create_tournament' %}" method="POST" name="tournament_form" data-name="Email Form" class="form-6"> {% csrf_token %}
         <img src="images/carbon_add-alt.png" loading="lazy" width="49" alt="" class="image-70">
-          <label for="name">Name Tournament</label><input type="text" class="w-input" maxlength="256" name="name" data-name="Name" placeholder="" id="name"> 
-          <label for="name">Platform</label><input type="text" class="w-input" maxlength="256" name="platform" data-name="platform" placeholder="" id="platform"> 
-          <label for="name">Game Name</label><input type="text" class="w-input" maxlength="256" name="game_name" data-name="game_name" placeholder="" id="game_name"> 
+          <label for="name">Name Tournament</label><input type="text" class="w-input" maxlength="256" name="name" data-name="Name" placeholder="" id="name" value={% if tournament is not None%} "{{tournament.name}}" {% endif %}> 
+          <label for="name">Platform</label><input type="text" class="w-input" maxlength="256" name="platform" data-name="platform" placeholder="" id="platform" value={% if tournament is not None%} "{{tournament.platform}}" {% endif %}>  
+          <label for="name">Game Name</label><input type="text" class="w-input" maxlength="256" name="game_name" data-name="game_name" placeholder="" id="game_name" value={% if tournament is not None%} "{{tournament.game_name}}" {% endif %}> 
           <label for="email">Team Deathmatch Mode</label>
           <div class="tournamentmode _1"> 
             {% for player_amount in team_size_choices %}
-              <input type="radio" id={{player_amount}} name="player_amount" value={{player_amount}}>
-              <label for="male">{{player_amount}}</label><br>
+              <label for="male"><input type="radio" id={{player_amount}} name="player_amount" value={{player_amount}} {% if tournament and tournament.player_amount|stringformat:"i" == player_amount|split:" "%} checked {% endif %}}>{{player_amount}}</label><br>
             {%endfor%}
           </div>
           <label for="email">Number of Teams</label>
           <div class="tournamentmode _1"> 
             {% for number_of_teams in team_number_choices %}
-              <input type="radio" id={{number_of_teams}} name="number_of_teams" value={{number_of_teams}}>
-              <label for="male">{{number_of_teams}}</label><br>
+              <label for="male"><input type="radio" id={{number_of_teams}} name="number_of_teams" value={{number_of_teams}} {% if tournament and tournament.number_of_teams|stringformat:"i" == number_of_teams|split:" "%} checked {% endif %}>{{number_of_teams}}</label><br
+              >
             {%endfor%}
           </div>
           <label for="email">Match Duration</label>
           <div class="tournamentmode _1"> 
             {% for game_length in game_length_choices %}
-              <input type="radio" id={{game_length}} name="game_length" value={{game_length}}>
-              <label for="male">{{game_length}}</label><br>
+              <label for="male"><input type="radio" id={{game_length}} name="game_length" value="{{game_length}}" {% if tournament and tournament.game_length|stringformat:"i" == game_length|split:" "%} checked {% endif %}>{{game_length}}</label><br>
+              
             {%endfor%}
           </div>
-          <label for="email">Describe the Tournament</label><textarea required="" maxlength="5000" id="description" name="description" placeholder="Add full details about tournament and rules" class="textarea-2 w-input"></textarea>
-          <label for="email">Enter Date of Tournament</label><input type="datetime-local" id="date" name="date">
+          <label for="email">Describe the Tournament</label><textarea required="" maxlength="5000" id="description" name="description" placeholder="Add full details about tournament and rules" class="textarea-2 w-input" >{% if tournament is not None%} {{tournament.description}} {% endif %}</textarea>
+          <label for="email">Enter Date of Tournament</label><input type="datetime-local" id="date" name="date" value={% if tournament is not None%} {{tournament.date}} {% endif %}>
           <input type="submit" value="Next" data-wait="Please wait..." class="w-button"></form>
           </form>
       </div>

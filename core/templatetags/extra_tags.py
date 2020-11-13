@@ -10,6 +10,9 @@ register = template.Library()
 #     citylist = CityList.objects.all()
 #     return citylist
 
+def media():
+    return "media/uploads"
+
 @register.filter
 def following_check(user_id, community_id): 
     following_check = Follow.objects.filter(user_id = user_id, community_id = community_id)

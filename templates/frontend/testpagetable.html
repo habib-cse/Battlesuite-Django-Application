@@ -1,0 +1,25 @@
+  <ul>
+    {% for connection in all_connections %} 
+    <li>
+
+    {% if connection.pk == current_pk %}
+    <b>
+    {% endif %}
+
+    {% if connection.pk in ready_list %}
+    <span style="color: green">
+    {% endif %}
+
+    {{ connection.pk }}
+    
+    {% if connection.pk == 244 %}
+    </span>
+    {% endif %}
+
+    {% if connection.pk == current_pk %}
+    </b>
+    {% endif %}
+
+    </li>
+    {% endfor %} 
+  </ul>

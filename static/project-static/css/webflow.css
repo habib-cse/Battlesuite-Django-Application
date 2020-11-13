@@ -95,6 +95,17 @@ html.w-mod-touch * {
   cursor: pointer;
   border-radius: 0;
 }
+.w-button.active {
+  display: inline-block;
+  padding: 9px 15px;
+  background-color: #afdaff;
+  color: #a39bfa;
+  border: 0;
+  line-height: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 0;
+}
 input.w-button {
   -webkit-appearance: button;
 }

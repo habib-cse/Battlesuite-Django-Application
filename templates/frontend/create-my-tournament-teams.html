@@ -1,6 +1,5 @@
 {% extends '../base/base.html' %}
   {% load static %}
-
   {% block content %}
   <div class="player-menu">
       <div class="container-20 w-container">
@@ -13,27 +12,36 @@
         <h4 class="go-back-button">Go back</h4>
         <h2 class="heeader">Organize Your Tournament</h2><img src="images/download.jpg" loading="lazy" width="106" alt="" class="leaguecover">
         <div class="form-block w-form">
-          <form id="email-form" name="email-form" data-name="Email Form" class="form-6">
             <h1 class="invite-members">Invite Team Members</h1><label for="name" class="field-label-9">Invite team members that you would like to attend this tournament with </label>
-            <div class="div-block-131">
-              {% for teammember in teammembers %}
-              <div class="div-block-130"><img src="images/mwJsSm7i_400x400.jpg" loading="lazy" width="71" alt="" class="team-photo">
-                <h4 class="teamnme">{{teammember}}</h4>
-                <button type="button" class="buttonn {% if teammember in challenged_teams %} active {% endif %} w-button">Invite</button>
+            <form method="POST" action="{% url 'core:edit_tournament' %}" name="teammembers-invite">
+              {% csrf_token %}
+              {{form1.as_p}}
+              <div class="div-block-131">
+                {% for teammember in teammembers %}
+                <div class="div-block-130"><img src="{{user_team.icon.url}}" loading="lazy" width="71" alt="" class="team-photo">
+                  <h4 class="teamnme">{{teammember}}</h4>
+                  <input type="hidden" name="Invite-TeamMember" value={{teammember.pk}} class="w-button  {% if teammember in invited_teammembers %} active {% endif %}">
+                  <input type="submit" name="Submit-Button1" value="Invite" class="w-button">
+                </div>
+                {% endfor %}
               </div>
-              {% endfor %}
-            </div>
+            </form>
+            
             <h1 class="invite-members ct">Challenge Teams </h1>
             {% comment %} <input type="text" class="text-field-5 w-input" maxlength="256" name="field" data-name="Field" placeholder="Search for team name" id="field" required=""> {% endcomment %}
             <div class="div-block-131">
-              {% for team in all_teams %}
-              <div class="div-block-130"><img src="images/mwJsSm7i_400x400.jpg" loading="lazy" width="71" alt="" class="team-photo">
-                <h4 class="teamnme">{{team}}</h4>
-                <button type="button" class="buttonn {% if team in challenged_teams %} active {% endif %} w-button">Invite</button>
-              </div>
-              {% endfor %}
+              <form method="POST" action="{% url 'core:edit_tournament' %}" name="team-challenge">
+                {% csrf_token %}
+                {{form2.as_p}}
+                {% for team in all_teams %}
+                <div class="div-block-130"><img src="{{team.icon.url}}" loading="lazy" width="71" alt="" class="team-photo">
+                  <h4 class="teamnme">{{team}}</h4>
+                  <input type="hidden" name="Challenge-Team" value="{{team}}" >
+                  <input type="submit" name="Submit-Button2" value="Challenge" class="w-button {% if team in challenged_teams %} active {% endif %}">
+                </div>
+                {% endfor %}
+              </form>
             </div>
-
         </div>
       </div>
     </div>

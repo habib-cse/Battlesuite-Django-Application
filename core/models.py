@@ -2,10 +2,17 @@ from django.db import models
 # Create your models here.
 from django.contrib.auth.models import User
 
+
+def team_based_upload_to(instance, filename):
+    return "uploads/teams/{}.png".format(instance.name)
+
+class TestConnection(models.Model):
+    pass
+
 class Team(models.Model):
     admin = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=250)
-    icon = models.ImageField(upload_to='teams')
+    icon = models.ImageField(upload_to=team_based_upload_to)
     
     def __str__(self):
         return self.name 
@@ -27,7 +34,6 @@ class Tournament(models.Model):
     platform = models.CharField(max_length=250)
     player_amount = models.IntegerField()
     number_of_teams = models.IntegerField()
-
     def __str__(self):
         return self.name
 
@@ -36,10 +42,60 @@ class Game(models.Model):
     players = models.ManyToManyField(User)
     duration = models.IntegerField() # minutes
 
+class TournamentRound(models.Model):
+    tournament = models.OneToOneField(Tournament, on_delete=models.CASCADE)
+    games = models.ManyToManyField(Game)
+
+class LoadingScreen(models.Model):
+    Game = models.OneToOneField(Game, on_delete=models.CASCADE, unique=True)
+    players = models.ManyToManyField(User)
+
+class LoadingScreenAdmin(models.Model):
+    loadingscreen = models.OneToOneField(LoadingScreen, on_delete=models.CASCADE)
+    admin = models.ForeignKey(User, on_delete=models.CASCADE)
+    ready = models.BooleanField(default=False)
+
+class LoadingScreenReadyPlayers(models.Model):
+    loadingscreen = models.OneToOneField(LoadingScreen, on_delete=models.CASCADE)
+    players = models.ManyToManyField(User)
+    
+
+class GameTeam(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+
 class Challenge(models.Model):
     host_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="+")
     challenged_team = models.ForeignKey(Team, on_delete=models.CASCADE)
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    
+    class Meta:
+        unique_together = ["tournament", "host_team", "challenged_team"]
+
+class TournamentInvite(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ["tournament", "user"]
+    
+class TournamentTeam(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.tournament.name + " - " + self.team.name
+    class Meta:
+        unique_together = ["tournament", "team"]
+
+
+class TournamentTeamUser(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ["tournament", "team", "user"]
 
 class Community(models.Model):
     name = models.CharField(max_length=300)
